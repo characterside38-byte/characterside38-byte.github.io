@@ -21,7 +21,6 @@ header p{color:#94a3b8;font-size:.85rem;margin-top:4px}
 .info h3{font-size:.98rem;margin-bottom:6px}
 .play-btn{background:#38bdf8;color:#060b19;border:none;width:100%;padding:8px;border-radius:8px;font-weight:800;font-size:.85rem}
 .soon-btn{background:#334155;color:#94a3b8}
-/* Fullscreen Game Player Modal */
 #player{display:none;position:fixed;inset:0;background:#060b19;z-index:99;flex-direction:column}
 #pbar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:#0f172a;border-bottom:1px solid #1e293b}
 #pbar button{background:#ef4444;color:#fff;border:none;padding:6px 12px;border-radius:8px;font-weight:bold}
@@ -35,11 +34,9 @@ iframe{flex:1;width:100%;border:none}
   <p>Tap any game to play instantly — No download needed!</p>
 </header>
 
-<!-- Adsterra Banner Slot 1 -->
 <div class="ad-box" id="ad-top">📢 Adsterra Banner Ad Space (728x90 / 320x50)</div>
 
 <div class="grid">
-  <!-- Game 1 (LIVE) -->
   <div class="card" onclick="openGame('ghost.html','👻 Chibi Ghost Maze')">
     <div class="thumb">👻<span class="badge">LIVE</span></div>
     <div class="info">
@@ -48,25 +45,22 @@ iframe{flex:1;width:100%;border:none}
     </div>
   </div>
 
-  <!-- Game 2 -->
-  <div class="card">
-    <div class="thumb">🚀<span class="badge soon">SOON</span></div>
+  <div class="card" onclick="openGame('space.html','🚀 Galaxy Strike 3D')">
+    <div class="thumb">🚀<span class="badge">LIVE</span></div>
     <div class="info">
-      <h3>Space Shooter</h3>
+      <h3>Galaxy Strike 3D</h3>
+      <button class="play-btn">▶ Play Now</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">🏃<span class="badge soon">SOON</span></div>
+    <div class="info">
+      <h3>Metro Escape 3D</h3>
       <button class="play-btn soon-btn">Coming Soon</button>
     </div>
   </div>
 
-  <!-- Game 3 -->
-  <div class="card">
-    <div class="thumb">🐍<span class="badge soon">SOON</span></div>
-    <div class="info">
-      <h3>Neon Snake</h3>
-      <button class="play-btn soon-btn">Coming Soon</button>
-    </div>
-  </div>
-
-  <!-- Game 4 -->
   <div class="card">
     <div class="thumb">🧱<span class="badge soon">SOON</span></div>
     <div class="info">
@@ -76,10 +70,8 @@ iframe{flex:1;width:100%;border:none}
   </div>
 </div>
 
-<!-- Adsterra Banner Slot 2 -->
 <div class="ad-box" id="ad-bottom">📢 Adsterra Native / Banner Ad Space</div>
 
-<!-- In-Page Game Player -->
 <div id="player">
   <div id="pbar">
     <span id="ptitle" style="font-weight:bold;color:#38bdf8">Game</span>
