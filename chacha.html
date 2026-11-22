@@ -10,41 +10,37 @@ body{background:#04060b;color:#fff;font-family:system-ui,sans-serif;height:100dv
 #hud{position:fixed;top:10px;left:10px;right:10px;display:flex;justify-content:space-between;align-items:center;z-index:10;pointer-events:none}
 .pill{background:rgba(15,23,42,.88);backdrop-filter:blur(8px);border:1px solid rgba(250,204,21,.45);padding:6px 12px;border-radius:99px;font-weight:800;font-size:13px;box-shadow:0 4px 15px rgba(0,0,0,.6)}
 .btn-top{pointer-events:auto;background:#facc15;color:#060b19;border:none;padding:6px 12px;border-radius:99px;font-weight:900;font-size:12px}
-#dialogue{position:fixed;top:52px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.75);border:1px solid #facc15;color:#fde047;padding:5px 14px;border-radius:99px;font-weight:800;font-size:12px;z-index:10;white-space:nowrap;box-shadow:0 0 15px rgba(250,204,21,.3)}
+#gameover{display:none;position:fixed;top:42%;left:50%;transform:translate(-50%,-50%);background:rgba(15,23,42,.92);border:2px solid #facc15;padding:18px 24px;border-radius:16px;text-align:center;z-index:20}
 #tip{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);color:#94a3b8;font-size:12px;font-weight:700;z-index:10;text-align:center;width:92%}
 </style>
 </head>
 <body>
 <div id="hud">
   <div class="pill">🏃 <b id="sc">0</b>m</div>
-  <div class="pill">🧣 <b id="cn">0</b></div>
-  <div class="pill" id="st">🗣️ Ladka Peeche!</div>
+  <div class="pill">🪙 <b id="cn">0</b></div>
   <div style="display:flex;gap:5px;pointer-events:auto">
     <button class="btn-top" style="background:#1e293b;color:#fff;border:1px solid #334155" id="sndBtn" onclick="toggleSnd()">🔊</button>
     <button class="btn-top" onclick="resetGame()">Reset</button>
   </div>
 </div>
 
-<div id="dialogue">"Chacha baste ke na hui hain... Chacha ruko toh!" 🗣️</div>
-<div id="tip">👆 Swipe Left/Right • Up: Jump • Down: Slide • Tap screen for Audio!</div>
+<div id="gameover">
+  <h2 style="color:#facc15;margin-bottom:6px">😂 Pakde Gaye Chacha!</h2>
+  <p style="font-size:13px;color:#cbd5e1;margin-bottom:12px">Tap screen or Reset to run again</p>
+  <button class="btn-top" onclick="resetGame()">▶ Play Again</button>
+</div>
+
+<div id="tip">👆 Swipe Left/Right • Up: Jump • Down: Slide</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-// =========================================================
-// 🔊 ORIGINAL VIDEO AUDIO PLAYER (chacha.mp4 / chacha.mp3)
-// Repo mein video ko 'chacha.mp4' naam se upload karte hi
-// asli awaaz game ke saath bajne lagegi!
-// =========================================================
-const memeAudio = document.createElement('video');
-memeAudio.src = 'chacha.mp4';
+const memeAudio = new Audio('chacha.mp4?v=1');
 memeAudio.loop = true;
-memeAudio.playsInline = true;
 memeAudio.volume = 1.0;
 
 let snd = true, actx = null;
 function startMemeAudio() {
-  if (!snd) return;
-  memeAudio.play().catch(() => {});
+  if (snd && memeAudio.paused) memeAudio.play().catch(() => {});
 }
 function toggleSnd() {
   snd = !snd;
@@ -64,9 +60,6 @@ function beep(freq, dur = 0.1) {
   o.connect(g); g.connect(actx.destination); o.start(); o.stop(t + dur);
 }
 
-// =========================================================
-// 🌃 NIGHT HIGHWAY 3D SCENE (Exact Video Vibe!)
-// =========================================================
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x05070d);
 scene.fog = new THREE.FogExp2(0x05070d, 0.016);
@@ -85,37 +78,23 @@ window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// Night Ambient + Warm Street-Lamp Lighting
-const amb = new THREE.AmbientLight(0x334155, 0.85);
-scene.add(amb);
-
+scene.add(new THREE.AmbientLight(0x334155, 0.85));
 const spot = new THREE.DirectionalLight(0xfef08a, 1.1);
-spot.position.set(10, 24, 12);
-spot.castShadow = true;
-spot.shadow.mapSize.width = 1024;
-spot.shadow.mapSize.height = 1024;
+spot.position.set(10, 24, 12); spot.castShadow = true;
+spot.shadow.mapSize.width = 1024; spot.shadow.mapSize.height = 1024;
 const d = 24;
 spot.shadow.camera.left = -d; spot.shadow.camera.right = d;
 spot.shadow.camera.top = d; spot.shadow.camera.bottom = -d;
 scene.add(spot);
 
-// Dark Asphalt Highway + White Edge Lines (Like the Video!)
 const LANES = [-3.0, 0, 3.0];
-const road = new THREE.Mesh(
-  new THREE.PlaneGeometry(13, 360),
-  new THREE.MeshStandardMaterial({ color: 0x181c24, roughness: 0.85 })
-);
-road.rotation.x = -Math.PI / 2;
-road.receiveShadow = true;
-scene.add(road);
+const road = new THREE.Mesh(new THREE.PlaneGeometry(13, 360), new THREE.MeshStandardMaterial({ color: 0x181c24, roughness: 0.85 }));
+road.rotation.x = -Math.PI / 2; road.receiveShadow = true; scene.add(road);
 
-// White Solid Edge Lines + Dashed Center Lines
 const lineMat = new THREE.MeshBasicMaterial({ color: 0xe2e8f0 });
 [-5.6, 5.6].forEach(lx => {
   const edge = new THREE.Mesh(new THREE.PlaneGeometry(0.22, 360), lineMat);
-  edge.rotation.x = -Math.PI / 2;
-  edge.position.set(lx, 0.02, -140);
-  scene.add(edge);
+  edge.rotation.x = -Math.PI / 2; edge.position.set(lx, 0.02, -140); scene.add(edge);
 });
 
 const dashes = [];
@@ -123,21 +102,13 @@ const dashGeo = new THREE.PlaneGeometry(0.18, 3.2);
 for (let i = 0; i < 36; i++) {
   [-1.5, 1.5].forEach(lx => {
     const m = new THREE.Mesh(dashGeo, lineMat);
-    m.rotation.x = -Math.PI / 2;
-    m.position.set(lx, 0.02, -i * 10);
-    scene.add(m);
-    dashes.push(m);
+    m.rotation.x = -Math.PI / 2; m.position.set(lx, 0.02, -i * 10);
+    scene.add(m); dashes.push(m);
   });
 }
 
-// Left High Concrete Boundary Wall (Like Video!) & Right Glowing Street Lamps
-const wall = new THREE.Mesh(
-  new THREE.BoxGeometry(1.5, 5.5, 360),
-  new THREE.MeshStandardMaterial({ color: 0x262930, roughness: 0.9 })
-);
-wall.position.set(-7.5, 2.75, -140);
-wall.receiveShadow = true;
-scene.add(wall);
+const wall = new THREE.Mesh(new THREE.BoxGeometry(1.5, 5.5, 360), new THREE.MeshStandardMaterial({ color: 0x262930, roughness: 0.9 }));
+wall.position.set(-7.5, 2.75, -140); wall.receiveShadow = true; scene.add(wall);
 
 const lamps = [];
 const poleMat = new THREE.MeshStandardMaterial({ color: 0x475569, metalness: 0.6 });
@@ -146,41 +117,27 @@ const glowMat = new THREE.MeshBasicMaterial({ color: 0xfde047, transparent: true
 
 for (let i = 0; i < 22; i++) {
   const lampGrp = new THREE.Group();
-  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.14, 7.5, 8), poleMat);
-  pole.position.y = 3.75;
-  const arm = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.12, 0.12), poleMat);
-  arm.position.set(-0.8, 7.4, 0);
-  const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.26, 10, 10), bulbMat);
-  bulb.position.set(-1.6, 7.3, 0);
-  const halo = new THREE.Mesh(new THREE.SphereGeometry(0.85, 10, 10), glowMat);
-  halo.position.set(-1.6, 7.3, 0);
-
+  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.14, 7.5, 8), poleMat); pole.position.y = 3.75;
+  const arm = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.12, 0.12), poleMat); arm.position.set(-0.8, 7.4, 0);
+  const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.26, 10, 10), bulbMat); bulb.position.set(-1.6, 7.3, 0);
+  const halo = new THREE.Mesh(new THREE.SphereGeometry(0.85, 10, 10), glowMat); halo.position.set(-1.6, 7.3, 0);
   lampGrp.add(pole, arm, bulb, halo);
   lampGrp.position.set(6.8, 0, -i * 16);
-  scene.add(lampGrp);
-  lamps.push(lampGrp);
+  scene.add(lampGrp); lamps.push(lampGrp);
 }
 
-// =========================================================
-// 🏃 CHACHA (BLUE T-SHIRT + GAMCHHA + SHORTS) & CHASER BOY
-// =========================================================
 function buildChacha() {
   const grp = new THREE.Group();
   const skinMat = new THREE.MeshStandardMaterial({ color: 0xd99b66, roughness: 0.55 });
-  const shirtMat = new THREE.MeshStandardMaterial({ color: 0x3b6ea5, roughness: 0.6 }); // Steel-blue T-shirt from video!
-  const shortMat = new THREE.MeshStandardMaterial({ color: 0xc2b29b, roughness: 0.75 }); // Beige/khaki shorts!
+  const shirtMat = new THREE.MeshStandardMaterial({ color: 0x3b6ea5, roughness: 0.6 });
+  const shortMat = new THREE.MeshStandardMaterial({ color: 0xc2b29b, roughness: 0.75 });
   const gamchhaMat = new THREE.MeshStandardMaterial({ color: 0xf1f5f9, roughness: 0.8 });
 
-  // Torso (Blue T-shirt)
   const torso = new THREE.Mesh(new THREE.BoxGeometry(0.88, 1.05, 0.48), shirtMat);
-  torso.position.y = 1.48; torso.castShadow = true;
-  grp.add(torso);
+  torso.position.y = 1.48; torso.castShadow = true; grp.add(torso);
 
-  // Iconic White Striped Gamchha around Neck!
   const collar = new THREE.Mesh(new THREE.TorusGeometry(0.32, 0.09, 8, 16), gamchhaMat);
-  collar.rotation.x = Math.PI / 2.2;
-  collar.position.set(0, 1.98, 0.02);
-  grp.add(collar);
+  collar.rotation.x = Math.PI / 2.2; collar.position.set(0, 1.98, 0.02); grp.add(collar);
 
   const tailL = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.68, 0.06), gamchhaMat);
   tailL.position.set(-0.22, 1.62, -0.26); tailL.rotation.z = 0.08;
@@ -188,87 +145,49 @@ function buildChacha() {
   tailR.position.set(0.22, 1.62, -0.26); tailR.rotation.z = -0.08;
   grp.add(tailL, tailR);
 
-  // Head & Short Hair
   const head = new THREE.Mesh(new THREE.SphereGeometry(0.35, 16, 16), skinMat);
-  head.position.y = 2.32; head.castShadow = true;
-  grp.add(head);
+  head.position.y = 2.32; head.castShadow = true; grp.add(head);
 
   const hair = new THREE.Mesh(new THREE.SphereGeometry(0.36, 16, 12, 0, Math.PI * 2, 0, Math.PI * 0.55), new THREE.MeshStandardMaterial({ color: 0x1e293b }));
-  hair.position.set(0, 2.36, 0.03);
-  grp.add(hair);
+  hair.position.set(0, 2.36, 0.03); grp.add(hair);
 
-  // Limbs (Shorts + Bare Legs/Slippers + Arms)
   const makeLeg = (x) => {
-    const piv = new THREE.Group();
-    piv.position.set(x, 0.96, 0);
-    const shortPart = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.45, 0.34), shortMat);
-    shortPart.position.y = -0.22; shortPart.castShadow = true;
-    const calf = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.48, 0.22), skinMat);
-    calf.position.y = -0.66; calf.castShadow = true;
-    const chappal = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.08, 0.38), new THREE.MeshStandardMaterial({ color: 0x0f172a }));
-    chappal.position.set(0, -0.92, -0.05);
-    piv.add(shortPart, calf, chappal);
-    grp.add(piv);
-    return piv;
+    const piv = new THREE.Group(); piv.position.set(x, 0.96, 0);
+    const shortPart = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.45, 0.34), shortMat); shortPart.position.y = -0.22;
+    const calf = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.48, 0.22), skinMat); calf.position.y = -0.66;
+    const chappal = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.08, 0.38), new THREE.MeshStandardMaterial({ color: 0x0f172a })); chappal.position.set(0, -0.92, -0.05);
+    piv.add(shortPart, calf, chappal); grp.add(piv); return piv;
   };
 
   const makeArm = (x) => {
-    const piv = new THREE.Group();
-    piv.position.set(x, 1.92, 0);
-    const sleeve = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.3, 0.24), shirtMat);
-    sleeve.position.y = -0.15;
-    const arm = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.55, 0.19), skinMat);
-    arm.position.y = -0.55; arm.castShadow = true;
-    piv.add(sleeve, arm);
-    grp.add(piv);
-    return piv;
+    const piv = new THREE.Group(); piv.position.set(x, 1.92, 0);
+    const sleeve = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.3, 0.24), shirtMat); sleeve.position.y = -0.15;
+    const arm = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.55, 0.19), skinMat); arm.position.y = -0.55;
+    piv.add(sleeve, arm); grp.add(piv); return piv;
   };
 
-  return {
-    grp,
-    legL: makeLeg(-0.22),
-    legR: makeLeg(0.22),
-    armL: makeArm(-0.56),
-    armR: makeArm(0.56),
-    tailL, tailR
-  };
+  return { grp, legL: makeLeg(-0.22), legR: makeLeg(0.22), armL: makeArm(-0.56), armR: makeArm(0.56), tailL, tailR };
 }
 
 function buildChaserBoy() {
   const grp = new THREE.Group();
-  const hoodie = new THREE.Mesh(new THREE.BoxGeometry(0.82, 1.0, 0.45), new THREE.MeshStandardMaterial({ color: 0xef4444 }));
-  hoodie.position.y = 1.42; grp.add(hoodie);
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.34, 14, 14), new THREE.MeshStandardMaterial({ color: 0xfdba74 }));
-  head.position.y = 2.22; grp.add(head);
-
+  const hoodie = new THREE.Mesh(new THREE.BoxGeometry(0.82, 1.0, 0.45), new THREE.MeshStandardMaterial({ color: 0xef4444 })); hoodie.position.y = 1.42; grp.add(hoodie);
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.34, 14, 14), new THREE.MeshStandardMaterial({ color: 0xfdba74 })); head.position.y = 2.22; grp.add(head);
   const mkLimb = (x, y, h, col) => {
     const p = new THREE.Group(); p.position.set(x, y, 0);
-    const m = new THREE.Mesh(new THREE.BoxGeometry(0.24, h, 0.24), new THREE.MeshStandardMaterial({ color: col }));
-    m.position.y = -h / 2; p.add(m); grp.add(p); return p;
+    const m = new THREE.Mesh(new THREE.BoxGeometry(0.24, h, 0.24), new THREE.MeshStandardMaterial({ color: col })); m.position.y = -h / 2; p.add(m); grp.add(p); return p;
   };
-  const legL = mkLimb(-0.2, 0.9, 0.88, 0x1e293b);
-  const legR = mkLimb(0.2, 0.9, 0.88, 0x1e293b);
-  const armL = mkLimb(-0.52, 1.85, 0.78, 0xfdba74);
-  const armR = mkLimb(0.52, 1.85, 0.78, 0xfdba74);
-
-  // Phone Camera in Chaser's Right Hand!
+  const legL = mkLimb(-0.2, 0.9, 0.88, 0x1e293b), legR = mkLimb(0.2, 0.9, 0.88, 0x1e293b);
+  const armL = mkLimb(-0.52, 1.85, 0.78, 0xfdba74), armR = mkLimb(0.52, 1.85, 0.78, 0xfdba74);
   const phone = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.28, 0.04), new THREE.MeshBasicMaterial({ color: 0x38bdf8 }));
-  phone.position.set(0, -0.78, -0.15);
-  armR.add(phone);
-
+  phone.position.set(0, -0.78, -0.15); armR.add(phone);
   return { grp, legL, legR, armL, armR };
 }
 
-const chacha = buildChacha();
-scene.add(chacha.grp);
+const chacha = buildChacha(); scene.add(chacha.grp);
+const boy = buildChaserBoy(); scene.add(boy.grp);
 
-const boy = buildChaserBoy();
-scene.add(boy.grp);
-
-// =========================================================
-// 🚧 HIGHWAY OBSTACLES (BARRICADES, AUTOS, BIKES, CHAI CUPS)
-// =========================================================
-let items = [], parts = [];
+let items = [];
 const coinGeo = new THREE.CylinderGeometry(0.42, 0.42, 0.14, 16).rotateX(Math.PI / 2);
 const coinMat = new THREE.MeshStandardMaterial({ color: 0xfacc15, emissive: 0xca8a04, emissiveIntensity: 0.5, metalness: 0.8 });
 
@@ -279,65 +198,44 @@ function spawnRow(zPos) {
       for (let i = 0; i < 4; i++) {
         const c = new THREE.Mesh(coinGeo, coinMat);
         c.position.set(LANES[l], 0.85, zPos - i * 2.5);
-        scene.add(c);
-        items.push({ mesh: c, type: 'coin' });
+        scene.add(c); items.push({ mesh: c, type: 'coin' });
       }
     } else if (Math.random() < 0.8) {
       const r = Math.random();
       if (r < 0.45) {
-        // Yellow-Black Police Road Barricade (Jump over!)
         const bar = new THREE.Group();
-        const board = new THREE.Mesh(new THREE.BoxGeometry(2.3, 0.75, 0.35), new THREE.MeshStandardMaterial({ color: 0xfacc15 }));
-        board.position.y = 0.85; board.castShadow = true;
+        const board = new THREE.Mesh(new THREE.BoxGeometry(2.3, 0.75, 0.35), new THREE.MeshStandardMaterial({ color: 0xfacc15 })); board.position.y = 0.85;
         const l1 = new THREE.Mesh(new THREE.BoxGeometry(0.18, 1.2, 0.3), new THREE.MeshStandardMaterial({ color: 0x1e293b })); l1.position.set(-0.95, 0.6, 0);
         const l2 = l1.clone(); l2.position.x = 0.95;
-        bar.add(board, l1, l2);
-        bar.position.set(LANES[l], 0, zPos);
-        scene.add(bar);
-        items.push({ mesh: bar, type: 'low' });
+        bar.add(board, l1, l2); bar.position.set(LANES[l], 0, zPos);
+        scene.add(bar); items.push({ mesh: bar, type: 'low' });
       } else if (r < 0.75) {
-        // High Highway Signboard (Slide under!)
         const sign = new THREE.Group();
-        const top = new THREE.Mesh(new THREE.BoxGeometry(2.5, 1.15, 0.35), new THREE.MeshStandardMaterial({ color: 0x0284c7 }));
-        top.position.y = 2.3; top.castShadow = true;
+        const top = new THREE.Mesh(new THREE.BoxGeometry(2.5, 1.15, 0.35), new THREE.MeshStandardMaterial({ color: 0x0284c7 })); top.position.y = 2.3;
         const p1 = new THREE.Mesh(new THREE.BoxGeometry(0.18, 2.85, 0.25), new THREE.MeshStandardMaterial({ color: 0x475569 })); p1.position.set(-1.1, 1.42, 0);
         const p2 = p1.clone(); p2.position.x = 1.1;
-        sign.add(top, p1, p2);
-        sign.position.set(LANES[l], 0, zPos);
-        scene.add(sign);
-        items.push({ mesh: sign, type: 'high' });
+        sign.add(top, p1, p2); sign.position.set(LANES[l], 0, zPos);
+        scene.add(sign); items.push({ mesh: sign, type: 'high' });
       } else {
-        // Night Truck / Auto Rickshaw (Dodge!)
         const truck = new THREE.Group();
-        const body = new THREE.Mesh(new THREE.BoxGeometry(2.2, 2.4, 5.2), new THREE.MeshStandardMaterial({ color: 0xdc2626, roughness: 0.4 }));
-        body.position.y = 1.3; body.castShadow = true;
+        const body = new THREE.Mesh(new THREE.BoxGeometry(2.2, 2.4, 5.2), new THREE.MeshStandardMaterial({ color: 0xdc2626, roughness: 0.4 })); body.position.y = 1.3;
         const hl1 = new THREE.Mesh(new THREE.SphereGeometry(0.18, 8, 8), bulbMat); hl1.position.set(-0.7, 0.8, 2.62);
         const hl2 = hl1.clone(); hl2.position.x = 0.7;
-        truck.add(body, hl1, hl2);
-        truck.position.set(LANES[l], 0, zPos - 2);
-        scene.add(truck);
-        items.push({ mesh: truck, type: 'truck' });
+        truck.add(body, hl1, hl2); truck.position.set(LANES[l], 0, zPos - 2);
+        scene.add(truck); items.push({ mesh: truck, type: 'truck' });
       }
     }
   });
 }
 
-// =========================================================
-// 🎮 GAMEPLAY & SWIPE CONTROLS
-// =========================================================
 let dist = 0, coins = 0, spd = 0.62, over = false, tick = 0;
-let laneIdx = 1, curX = 0, py = 0, vy = 0, slideT = 0, boyZ = 2.6, nextZ = -35;
-
-const LINES = [
-  '"Chacha baste ke na hui hain..." 🗣️',
-  '"Chacha chacha chacha!" 🏃',
-  '"Chacha ruko toh!" 😂'
-];
+let laneIdx = 1, curX = 0, py = 0, vy = 0, slideT = 0, boyZ = 3.2, nextZ = -35;
 
 function resetGame() {
   items.forEach(i => scene.remove(i.mesh)); items = [];
   dist = 0; coins = 0; spd = 0.62; over = false;
-  laneIdx = 1; curX = 0; py = 0; vy = 0; slideT = 0; boyZ = 2.6; nextZ = -35;
+  laneIdx = 1; curX = 0; py = 0; vy = 0; slideT = 0; boyZ = 3.2; nextZ = -35;
+  document.getElementById('gameover').style.display = 'none';
   startMemeAudio();
 }
 
@@ -382,10 +280,6 @@ function animate() {
     dist += step * 2.2;
     spd = Math.min(1.18, 0.62 + dist * 0.00004);
 
-    if (tick % 140 === 0) {
-      document.getElementById('dialogue').textContent = LINES[Math.floor(tick / 140) % LINES.length];
-    }
-
     const targetX = LANES[laneIdx];
     curX += (targetX - curX) * 14 * dt;
 
@@ -394,7 +288,7 @@ function animate() {
       if (py <= 0) { py = 0; vy = 0; }
     }
     if (slideT > 0) slideT--;
-    if (boyZ < 6.2) boyZ += 0.75 * dt;
+    if (boyZ < 6.4) boyZ += 0.75 * dt;
 
     dashes.forEach(m => { m.position.z += step; if (m.position.z > 10) m.position.z -= 360; });
     lamps.forEach(l => { l.position.z += step; if (l.position.z > 12) l.position.z -= 352; });
@@ -424,10 +318,9 @@ function animate() {
             beep(140, 0.25);
             if (it.type === 'truck' || boyZ < 2.5) {
               over = true; boyZ = 1.1;
-              document.getElementById('dialogue').textContent = '😂 Pakde Gaye Chacha! Tap to run again!';
+              document.getElementById('gameover').style.display = 'block';
             } else {
               boyZ = 1.75;
-              document.getElementById('dialogue').textContent = '⚠️ "Chacha ruko toh!" Bilkul peeche aa gaya!';
             }
             continue;
           }
@@ -439,7 +332,6 @@ function animate() {
       }
     }
 
-    // Animate Chacha Running + Flapping Gamchha!
     const run = Math.sin(tick * 0.3) * 0.8;
     chacha.legL.rotation.x = run; chacha.legR.rotation.x = -run;
     chacha.armL.rotation.x = -run * 0.85; chacha.armR.rotation.x = run * 0.85;
@@ -448,24 +340,19 @@ function animate() {
     chacha.grp.scale.y = slideT > 0 ? 0.55 : 1.0;
     chacha.grp.position.set(curX, py + Math.abs(Math.cos(tick * 0.3)) * 0.14, 0);
 
-    // Animate Chaser Boy with Phone Camera!
     const bRun = Math.sin(tick * 0.36) * 0.85;
     boy.legL.rotation.x = bRun; boy.legR.rotation.x = -bRun;
-    boy.armL.rotation.x = -bRun * 0.8; boy.armR.rotation.x = 0.85; // Holding phone out to record Chacha!
+    boy.armL.rotation.x = -bRun * 0.8; boy.armR.rotation.x = 0.85;
     boy.grp.visible = boyZ < 5.6 && py < 2.0;
     boy.grp.position.set(curX, Math.abs(Math.cos(tick * 0.36)) * 0.15, boyZ);
 
-    // Handheld Shaky Night Chase Camera (Matches video vibe!)
-    camera.position.x += (curX * 0.55 + Math.sin(tick * 0.25) * 0.06 - camera.position.x) * 7 * dt;
-    camera.position.y += (3.8 + py * 0.5 + Math.abs(Math.cos(tick * 0.3)) * 0.08 - camera.position.y) * 7 * dt;
+    camera.position.x += (curX * 0.55 - camera.position.x) * 7 * dt;
+    camera.position.y += (3.8 + py * 0.5 - camera.position.y) * 7 * dt;
     camera.position.z = 7.0;
     camera.lookAt(curX * 0.35, 1.5 + py * 0.35, -10);
 
     document.getElementById('sc').textContent = Math.floor(dist);
     document.getElementById('cn').textContent = coins;
-    const st = document.getElementById('st');
-    st.textContent = boyZ < 2.6 ? '🗣️ CHACHA RUKO!' : '🏃 Chacha Bhaago!';
-    st.style.color = boyZ < 2.6 ? '#facc15' : '#38bdf8';
   }
 
   renderer.render(scene, camera);
