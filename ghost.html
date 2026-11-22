@@ -6,15 +6,15 @@
 <title>Chibi Ghost Maze</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;user-select:none}
-body{background:radial-gradient(circle at top,#0f1c3f,#050814 75%);color:#fff;font-family:system-ui,sans-serif;height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:8px;overflow:hidden;touch-action:none}
-.hud{width:100%;max-width:420px;display:flex;flex-direction:column;gap:6px}
-.top{display:flex;justify-content:space-between;align-items:center;background:rgba(15,23,42,.85);border:1px solid rgba(56,189,248,.3);box-shadow:0 0 15px rgba(6,182,212,.15);padding:6px 14px;border-radius:99px;font-weight:800;font-size:14px}
-.pwrs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.pbtn{background:rgba(15,23,42,.9);border:1px solid #334155;color:#64748b;border-radius:99px;padding:6px 4px;font-size:11px;font-weight:800;transition:.2s}
+body{background:radial-gradient(circle at top,#111d42,#050814 80%);color:#fff;font-family:system-ui,sans-serif;height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:6px;overflow:hidden;touch-action:none}
+.hud{width:100%;max-width:440px;display:flex;flex-direction:column;gap:5px}
+.top{display:flex;justify-content:space-between;align-items:center;background:rgba(15,23,42,.9);border:1px solid rgba(56,189,248,.35);box-shadow:0 0 15px rgba(6,182,212,.15);padding:5px 12px;border-radius:99px;font-weight:800;font-size:13px}
+.pwrs{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.pbtn{background:rgba(15,23,42,.9);border:1px solid #334155;color:#64748b;border-radius:99px;padding:5px 4px;font-size:11px;font-weight:800;transition:.2s}
 .pbtn.ready{border-color:#38bdf8;color:#fff;background:linear-gradient(135deg,#0284c7,#1e3a8a);box-shadow:0 0 10px rgba(56,189,248,.4)}
-.pbtn.active{border-color:#22c55e;color:#bbf7d0;background:#14532d;box-shadow:0 0 12px rgba(34,197,94,.5)}
-canvas{background:#060c1d;border:2px solid #06b6d4;border-radius:14px;box-shadow:0 0 28px rgba(6,182,212,.28),inset 0 0 20px rgba(6,182,212,.12)}
-.tip{color:#38bdf8;font-size:12px;font-weight:700;text-shadow:0 0 8px rgba(56,189,248,.5)}
+.pbtn.active{border-color:#22c55e;color:#bbf7d0;background:#14532d}
+canvas{background:#060c1d;border:2px solid #06b6d4;border-radius:14px;box-shadow:0 0 28px rgba(6,182,212,.25);max-width:98vw;max-height:78dvh}
+.tip{color:#38bdf8;font-size:12px;font-weight:700}
 </style>
 </head>
 <body>
@@ -24,8 +24,8 @@ canvas{background:#060c1d;border:2px solid #06b6d4;border-radius:14px;box-shadow
     <span>🏆 <b id="sc">0</b></span>
     <span id="l">❤️❤️❤️</span>
     <div style="display:flex;gap:5px">
-      <button id="sndBtn" onclick="toggleSnd()" style="background:#1e293b;border:1px solid #334155;color:#fff;width:26px;height:26px;border-radius:50%">🔊</button>
-      <button onclick="resetAll(true)" style="background:#38bdf8;color:#060b19;border:none;padding:3px 10px;border-radius:99px;font-weight:800;font-size:12px">Reset</button>
+      <button id="sndBtn" onclick="toggleSnd()" style="background:#1e293b;border:1px solid #334155;color:#fff;width:25px;height:25px;border-radius:50%">🔊</button>
+      <button onclick="resetAll(true)" style="background:#38bdf8;color:#060b19;border:none;padding:3px 10px;border-radius:99px;font-weight:800;font-size:11px">Reset</button>
     </div>
   </div>
   <div class="pwrs">
@@ -35,36 +35,40 @@ canvas{background:#060c1d;border:2px solid #06b6d4;border-radius:14px;box-shadow
   </div>
 </div>
 
-<canvas id="cv" width="330" height="418"></canvas>
+<canvas id="cv" width="374" height="506"></canvas>
 <div class="tip" id="msg">👆 Swipe anywhere on maze to move!</div>
 
 <script>
 const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
-const S=22,R=19,C=15;
+const S=22,R=23,C=17;
 const BASE=[
-  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-  [1,0,0,0,0,0,0,1,0,0,0,0,0,0,1],
-  [1,0,1,1,0,1,0,1,0,1,0,1,1,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,1,1,0,1,1,1,1,1,0,1,1,0,1],
-  [1,0,0,0,0,0,0,1,0,0,0,0,0,0,1],
-  [1,1,1,0,1,1,0,1,0,1,1,0,1,1,1],
-  [1,0,0,0,1,2,2,2,2,2,1,0,0,0,1],
-  [1,0,1,0,1,2,1,2,1,2,1,0,1,0,1],
-  [1,0,0,0,0,2,2,2,2,2,0,0,0,0,1],
-  [1,1,1,0,1,1,0,1,0,1,1,0,1,1,1],
-  [1,0,0,0,0,0,0,1,0,0,0,0,0,0,1],
-  [1,0,1,1,0,1,1,1,1,1,0,1,1,0,1],
-  [1,0,0,1,0,0,0,0,0,0,0,1,0,0,1],
-  [1,1,0,1,0,1,0,1,0,1,0,1,0,1,1],
-  [1,0,0,0,0,1,0,1,0,1,0,0,0,0,1],
-  [1,0,1,1,1,1,0,0,0,1,1,1,1,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+  [1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
+  [1,0,1,1,0,1,1,0,1,0,1,1,0,1,1,0,1],
+  [1,0,1,1,0,1,1,0,0,0,1,1,0,1,1,0,1],
+  [1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
+  [1,0,1,1,0,1,0,1,1,1,0,1,0,1,1,0,1],
+  [1,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,1],
+  [1,1,1,1,0,1,1,0,1,0,1,1,0,1,1,1,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,1,1,0,1,1,2,2,2,1,1,0,1,1,0,1],
+  [1,0,0,1,0,1,2,2,2,2,2,1,0,1,0,0,1],
+  [1,1,0,1,0,1,2,2,2,2,2,1,0,1,0,1,1],
+  [1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,0,1],
+  [1,0,1,1,0,1,1,1,2,1,1,1,0,1,1,0,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,1,1,1,0,1,1,1,1,1,0,1,1,1,0,1],
+  [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1],
+  [1,1,1,0,1,0,1,0,1,0,1,0,1,0,1,1,1],
+  [1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1],
+  [1,0,1,1,1,1,1,0,1,0,1,1,1,1,1,0,1],
+  [1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
+  [1,0,1,1,0,1,1,0,0,0,1,1,0,1,1,0,1],
+  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 ];
 
 let map,coins=0,score=0,lives=3,lvl=1,play=false,over=false,snd=true;
-let spdT=0,frzT=0,invT=0,tick=0,p,gs,parts=[],actx=null;
+let spdT=0,frzT=0,invT=0,tick=0,p,ghost,parts=[],actx=null;
 
 function beep(f,t='sine',d=0.07){
   if(!snd)return;
@@ -72,7 +76,7 @@ function beep(f,t='sine',d=0.07){
   if(actx.state==='suspended')actx.resume();
   const o=actx.createOscillator(),g=actx.createGain();
   o.type=t;o.frequency.value=f;
-  g.gain.setValueAtTime(0.08,actx.currentTime);
+  g.gain.setValueAtTime(0.07,actx.currentTime);
   g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+d);
   o.connect(g);g.connect(actx.destination);o.start();o.stop(actx.currentTime+d);
 }
@@ -80,8 +84,8 @@ function toggleSnd(){snd=!snd;document.getElementById('sndBtn').textContent=snd?
 
 function spawnParts(x,y,col,n=10){
   for(let i=0;i<n;i++){
-    const a=Math.random()*Math.PI*2,sp=1+Math.random()*2.5;
-    parts.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:22,col});
+    const a=Math.random()*Math.PI*2,sp=0.8+Math.random()*2.2;
+    parts.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:24,col});
   }
 }
 
@@ -95,12 +99,8 @@ function updateHUD(){
 }
 
 function resetPos(){
-  p={x:7,y:17,dx:0,dy:0,nx:0,ny:0,pr:0,fx:0,fy:1};
-  gs=[
-    {x:6,y:9,dx:1,dy:0,pr:0,c:'#f472b6',g:'rgba(244,114,182,.5)'},
-    {x:7,y:8,dx:0,dy:-1,pr:0,c:'#a78bfa',g:'rgba(167,139,250,.5)'},
-    {x:8,y:9,dx:-1,dy:0,pr:0,c:'#fb7185',g:'rgba(251,113,133,.5)'}
-  ];
+  p={x:8,y:21,dx:0,dy:0,nx:0,ny:0,pr:0,fx:0,fy:1};
+  ghost={x:8,y:10,dx:1,dy:0,pr:0};
 }
 
 function resetAll(full){
@@ -114,14 +114,14 @@ const ok=(x,y)=>x>=0&&x<C&&y>=0&&y<R&&map[y][x]!==1;
 function setDir(dx,dy){
   if(over){resetAll(true);return;}
   play=true;p.nx=dx;p.ny=dy;
-  document.getElementById('msg').textContent='Level '+lvl+' • Collect all glowing coins!';
+  document.getElementById('msg').textContent='Level '+lvl+' • Escape the Chibi Ghost!';
 }
 
-function useSpeed(){if(play&&!over&&spdT===0&&coins>=100){coins-=100;spdT=300;beep(680,'triangle',.2);spawnParts((p.x+.5)*S,(p.y+.5)*S,'#38bdf8',16);updateHUD();}}
+function useSpeed(){if(play&&!over&&spdT===0&&coins>=100){coins-=100;spdT=360;beep(680,'triangle',.2);spawnParts((p.x+.5)*S,(p.y+.5)*S,'#38bdf8',16);updateHUD();}}
 function useTele(){
   if(!play||over||coins<150)return;
   const open=[];
-  for(let r=1;r<R-1;r++)for(let c=1;c<C-1;c++)if(map[r][c]!==1&&gs.every(g=>Math.hypot(g.x-c,g.y-r)>4))open.push({x:c,y:r});
+  for(let r=1;r<R-1;r++)for(let c=1;c<C-1;c++)if(map[r][c]!==1&&Math.hypot(ghost.x-c,ghost.y-r)>5)open.push({x:c,y:r});
   if(open.length){
     coins-=150;spawnParts((p.x+.5)*S,(p.y+.5)*S,'#a855f7',16);
     const k=open[Math.floor(Math.random()*open.length)];
@@ -129,7 +129,7 @@ function useTele(){
     spawnParts((p.x+.5)*S,(p.y+.5)*S,'#38bdf8',16);updateHUD();
   }
 }
-function useFreeze(){if(play&&!over&&frzT===0&&coins>=200){coins-=200;frzT=300;beep(520,'square',.25);gs.forEach(g=>spawnParts((g.x+.5)*S,(g.y+.5)*S,'#7dd3fc',14));updateHUD();}}
+function useFreeze(){if(play&&!over&&frzT===0&&coins>=200){coins-=200;frzT=360;beep(520,'square',.25);spawnParts((ghost.x+.5)*S,(ghost.y+.5)*S,'#7dd3fc',18);updateHUD();}}
 
 window.onkeydown=e=>{
   const k=e.key.toLowerCase();
@@ -157,15 +157,16 @@ function update(){
   if(frzT>0&&--frzT===0)updateHUD();
   if(invT>0)invT--;
 
+  // Controlled smooth player speed (0.065 normal, 0.11 boost)
   if(p.dx===0&&p.dy===0&&(p.nx||p.ny)&&ok(p.x+p.nx,p.y+p.ny)){p.dx=p.nx;p.dy=p.ny;p.fx=p.dx;p.fy=p.dy;}
   if(p.dx||p.dy){
-    p.pr+=spdT>0?0.17:0.11;
-    if(spdT>0&&tick%3===0)spawnParts((p.x+p.dx*p.pr+.5)*S,(p.y+p.dy*p.pr+.5)*S,'#38bdf8',2);
+    p.pr+=spdT>0?0.11:0.065;
+    if(spdT>0&&tick%4===0)spawnParts((p.x+p.dx*p.pr+.5)*S,(p.y+p.dy*p.pr+.5)*S,'#38bdf8',2);
     if(p.pr>=1){
       p.x+=p.dx;p.y+=p.dy;p.pr=0;
       if(map[p.y][p.x]===0){
         map[p.y][p.x]=2;coins+=10;score+=100;beep(620,'sine',.05);
-        spawnParts((p.x+.5)*S,(p.y+.5)*S,'#facc15',7);updateHUD();
+        spawnParts((p.x+.5)*S,(p.y+.5)*S,'#facc15',6);updateHUD();
       }
       if(!map.some(r=>r.includes(0))){lvl++;score+=500;beep(820,'triangle',.3);resetAll(false);return;}
       if((p.nx||p.ny)&&ok(p.x+p.nx,p.y+p.ny)){p.dx=p.nx;p.dy=p.ny;p.fx=p.dx;p.fy=p.dy;}
@@ -173,84 +174,173 @@ function update(){
     }
   }
 
-  const gSpd=frzT>0?0:Math.min(0.08+(lvl-1)*0.008,0.11);
-  gs.forEach(g=>{
-    if(gSpd>0){
-      g.pr+=gSpd;
-      if(g.pr>=1){
-        g.x+=g.dx;g.y+=g.dy;g.pr=0;
-        const ds=[{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}].filter(d=>ok(g.x+d.x,g.y+d.y)&&!(d.x===-g.dx&&d.y===-g.dy));
-        if(ds.length){
-          ds.sort((a,b)=>Math.hypot(g.x+a.x-p.x,g.y+a.y-p.y)-Math.hypot(g.x+b.x-p.x,g.y+b.y-p.y)+(Math.random()-.35)*6);
-          g.dx=ds[0].x;g.dy=ds[0].y;
-        }else if(ok(g.x-g.dx,g.y-g.dy)){g.dx=-g.dx;g.dy=-g.dy;}
-      }
+  // Single Chibi Ghost AI (Smooth 0.052 speed)
+  const gSpd=frzT>0?0:Math.min(0.052+(lvl-1)*0.005,0.075);
+  if(gSpd>0){
+    ghost.pr+=gSpd;
+    if(ghost.pr>=1){
+      ghost.x+=ghost.dx;ghost.y+=ghost.dy;ghost.pr=0;
+      const ds=[{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}].filter(d=>ok(ghost.x+d.x,ghost.y+d.y)&&!(d.x===-ghost.dx&&d.y===-ghost.dy));
+      if(ds.length){
+        ds.sort((a,b)=>Math.hypot(ghost.x+a.x-p.x,ghost.y+a.y-p.y)-Math.hypot(ghost.x+b.x-p.x,ghost.y+b.y-p.y)+(Math.random()-.3)*5);
+        ghost.dx=ds[0].x;ghost.dy=ds[0].y;
+      }else if(ok(ghost.x-ghost.dx,ghost.y-ghost.dy)){ghost.dx=-ghost.dx;ghost.dy=-ghost.dy;}
     }
-    if(invT===0&&Math.hypot((p.x+p.dx*p.pr)-(g.x+g.dx*g.pr),(p.y+p.dy*p.pr)-(g.y+g.dy*g.pr))<0.65){
-      lives--;beep(160,'sawtooth',.3);spawnParts((p.x+.5)*S,(p.y+.5)*S,'#ef4444',18);updateHUD();
-      if(lives<=0){over=true;document.getElementById('msg').textContent='💀 Game Over! Swipe or tap Reset!';}
-      else{invT=120;resetPos();}
-    }
+  }
+
+  if(invT===0&&Math.hypot((p.x+p.dx*p.pr)-(ghost.x+ghost.dx*ghost.pr),(p.y+p.dy*p.pr)-(ghost.y+ghost.dy*ghost.pr))<0.68){
+    lives--;beep(160,'sawtooth',.3);spawnParts((p.x+.5)*S,(p.y+.5)*S,'#ef4444',20);updateHUD();
+    if(lives<=0){over=true;document.getElementById('msg').textContent='💀 Game Over! Swipe or tap Reset!';}
+    else{invT=120;resetPos();}
+  }
+}
+
+// Realistic Chibi Boy Hero Renderer
+function drawChibiPlayer(px,py){
+  const bob=(p.dx||p.dy)?Math.sin(tick*0.3)*1.4:Math.sin(tick*0.1)*0.7;
+  const y=py+bob;
+  ctx.save();
+  // Ground shadow
+  ctx.fillStyle='rgba(0,0,0,0.45)';
+  ctx.beginPath();ctx.ellipse(px,py+9.5,7,2.8,0,0,Math.PI*2);ctx.fill();
+
+  // Speed aura
+  if(spdT>0){ctx.shadowColor='#38bdf8';ctx.shadowBlur=14;}
+
+  // Jacket / Body
+  const bodyGrad=ctx.createLinearGradient(px-6,y+1,px+6,y+9);
+  bodyGrad.addColorStop(0,'#3b82f6');bodyGrad.addColorStop(1,'#1d4ed8');
+  ctx.fillStyle=bodyGrad;
+  ctx.beginPath();ctx.roundRect(px-5.5,y+2,11,7,3.5);ctx.fill();
+  // Hoodie collar
+  ctx.fillStyle='#f8fafc';ctx.fillRect(px-2.5,y+2,5,2);
+
+  // Chibi Face (3D skin gradient)
+  const skin=ctx.createRadialGradient(px-2,y-4,1,px,y-3,8.5);
+  skin.addColorStop(0,'#ffedd5');skin.addColorStop(1,'#fed7aa');
+  ctx.fillStyle=skin;
+  ctx.beginPath();ctx.arc(px,y-3,7.6,0,Math.PI*2);ctx.fill();
+
+  // Anime Hair
+  ctx.fillStyle='#1e293b';
+  ctx.beginPath();
+  ctx.arc(px,y-4.5,8,Math.PI*0.95,Math.PI*2.05);
+  ctx.lineTo(px+7.5,y-2);ctx.lineTo(px+4,y-5.5);ctx.lineTo(px,y-3.5);ctx.lineTo(px-4,y-5.5);ctx.lineTo(px-7.5,y-2);
+  ctx.closePath();ctx.fill();
+
+  // Expressive Anime Eyes + Shine
+  const ex=p.fx*1.4,ey=p.fy*1.1;
+  ctx.fillStyle='#0f172a';
+  ctx.beginPath();ctx.ellipse(px-2.8+ex,y-2.2+ey,1.5,2.1,0,0,Math.PI*2);ctx.ellipse(px+2.8+ex,y-2.2+ey,1.5,2.1,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#fff';
+  ctx.beginPath();ctx.arc(px-3.3+ex,y-2.9+ey,0.75,0,Math.PI*2);ctx.arc(px+2.3+ex,y-2.9+ey,0.75,0,Math.PI*2);ctx.fill();
+
+  // Cute Smile & Blush
+  ctx.fillStyle='rgba(244,114,182,0.55)';
+  ctx.beginPath();ctx.arc(px-4.8,y-0.6,1.4,0,Math.PI*2);ctx.arc(px+4.8,y-0.6,1.4,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#9a3412';ctx.lineWidth=1;
+  ctx.beginPath();ctx.arc(px+ex*0.6,y-0.3+ey*0.5,1.6,0.15*Math.PI,0.85*Math.PI);ctx.stroke();
+  ctx.restore();
+}
+
+// Reference Image Style Kawaii Chibi Ghost Renderer
+function drawKawaiiGhost(gx,gy){
+  const floatY=gy+Math.sin(tick*0.12)*2;
+  const r=10.5;
+  ctx.save();
+
+  // Ground shadow
+  ctx.fillStyle='rgba(0,0,0,0.4)';
+  ctx.beginPath();ctx.ellipse(gx,gy+11,8,3,0,0,Math.PI*2);ctx.fill();
+
+  // Soft outer glow
+  ctx.shadowColor=frzT>0?'#38bdf8':'#e9d5ff';
+  ctx.shadowBlur=14;
+
+  // Chibi Ghost Body (White-Lavender gradient like reference image)
+  const gGrad=ctx.createRadialGradient(gx-3,floatY-5,2,gx,floatY,r+3);
+  if(frzT>0){
+    gGrad.addColorStop(0,'#e0f2fe');gGrad.addColorStop(1,'#38bdf8');
+  }else{
+    gGrad.addColorStop(0,'#ffffff');gGrad.addColorStop(0.75,'#f3e8ff');gGrad.addColorStop(1,'#d8b4fe');
+  }
+  ctx.fillStyle=gGrad;
+
+  // Head + Stubby Little Side Arms + Wavy Skirt
+  const w=Math.sin(tick*0.2)*1.6;
+  ctx.beginPath();
+  ctx.arc(gx,floatY-2,r*0.88,Math.PI,0);
+  // Right little chibi arm
+  ctx.quadraticCurveTo(gx+r*1.35,floatY+1,gx+r*0.92,floatY+4.5);
+  // Wavy bottom hem
+  ctx.lineTo(gx+r*0.95,floatY+r*0.92);
+  ctx.quadraticCurveTo(gx+r*0.5,floatY+r*0.65+w,gx,floatY+r*0.95-w);
+  ctx.quadraticCurveTo(gx-r*0.5,floatY+r*0.65+w,gx-r*0.95,floatY+r*0.92);
+  // Left little chibi arm
+  ctx.lineTo(gx-r*0.92,floatY+4.5);
+  ctx.quadraticCurveTo(gx-r*1.35,floatY+1,gx-r*0.88,floatY-2);
+  ctx.closePath();
+  ctx.fill();
+  ctx.shadowBlur=0;
+
+  // Big Sparkling Anime Eyes (like your image!)
+  const ex=ghost.dx*1.2,ey=ghost.dy*1;
+  [-3.6,3.6].forEach(ox=>{
+    ctx.fillStyle='#2e1065';
+    ctx.beginPath();ctx.arc(gx+ox+ex,floatY-1.5+ey,2.8,0,Math.PI*2);ctx.fill();
+    // Purple iris tint
+    ctx.fillStyle='#7e22ce';
+    ctx.beginPath();ctx.arc(gx+ox+ex,floatY-0.8+ey,1.7,0,Math.PI*2);ctx.fill();
+    // Double white star sparkles
+    ctx.fillStyle='#ffffff';
+    ctx.beginPath();ctx.arc(gx+ox-1+ex,floatY-2.6+ey,1.15,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(gx+ox+1.1+ex,floatY-0.7+ey,0.6,0,Math.PI*2);ctx.fill();
   });
+
+  // Pink Rosy Cheeks
+  ctx.fillStyle='rgba(244,114,182,0.65)';
+  ctx.beginPath();ctx.ellipse(gx-6,floatY+1.5,2.1,1.3,0,0,Math.PI*2);ctx.ellipse(gx+6,floatY+1.5,2.1,1.3,0,0,Math.PI*2);ctx.fill();
+
+  // Cute Little 'O' Ghost Mouth
+  ctx.fillStyle='#be185d';
+  ctx.beginPath();ctx.ellipse(gx+ex*0.7,floatY+2.4+ey*0.5,1.6,2.1,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#fbcfe8';
+  ctx.beginPath();ctx.arc(gx+ex*0.7,floatY+3.2+ey*0.5,1,0,Math.PI);ctx.fill();
+
+  ctx.restore();
 }
 
 function draw(){
   ctx.clearRect(0,0,cv.width,cv.height);
-  const pulse=Math.sin(tick*0.1)*1.2;
+  const pulse=Math.sin(tick*0.1)*1.1;
 
   for(let r=0;r<R;r++)for(let c=0;c<C;c++){
     const x=c*S,y=r*S;
     if(map[r][c]===1){
       const grad=ctx.createLinearGradient(x,y,x+S,y+S);
       grad.addColorStop(0,'#0e7490');grad.addColorStop(1,'#1e1b4b');
-      ctx.fillStyle=grad;ctx.strokeStyle='#22d3ee';ctx.lineWidth=1.3;
+      ctx.fillStyle=grad;ctx.strokeStyle='#22d3ee';ctx.lineWidth=1.2;
       ctx.beginPath();ctx.roundRect(x+1.5,y+1.5,S-3,S-3,5);ctx.fill();ctx.stroke();
-      ctx.fillStyle='rgba(255,255,255,.12)';ctx.fillRect(x+3,y+3,S-6,3);
+      ctx.fillStyle='rgba(255,255,255,.1)';ctx.fillRect(x+3,y+3,S-6,2.5);
     }else{
-      ctx.strokeStyle='rgba(56,189,248,.07)';ctx.strokeRect(x,y,S,S);
+      ctx.strokeStyle='rgba(56,189,248,.06)';ctx.strokeRect(x,y,S,S);
       if(map[r][c]===0){
-        ctx.save();ctx.shadowColor='#facc15';ctx.shadowBlur=8;
-        ctx.fillStyle='#fde047';ctx.beginPath();ctx.arc(x+S/2,y+S/2,3.4+pulse*.4,0,Math.PI*2);ctx.fill();
-        ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x+S/2-1,y+S/2-1,1.1,0,Math.PI*2);ctx.fill();
+        ctx.save();ctx.shadowColor='#facc15';ctx.shadowBlur=7;
+        ctx.fillStyle='#fde047';ctx.beginPath();ctx.arc(x+S/2,y+S/2,3.2+pulse*.35,0,Math.PI*2);ctx.fill();
+        ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x+S/2-1,y+S/2-1,1,0,Math.PI*2);ctx.fill();
         ctx.restore();
       }
     }
   }
 
-  // Draw Chibi Hero
-  const px=(p.x+p.dx*p.pr+.5)*S,py=(p.y+p.dy*p.pr+.5)*S+Math.sin(tick*.15)*1.2;
-  if(invT===0||Math.floor(invT/5)%2===0){
-    ctx.save();
-    ctx.shadowColor=spdT>0?'#38bdf8':'#4ade80';ctx.shadowBlur=14;
-    const hGrad=ctx.createRadialGradient(px-2,py-3,2,px,py,9);
-    hGrad.addColorStop(0,spdT>0?'#bae6fd':'#bbf7d0');
-    hGrad.addColorStop(1,spdT>0?'#0284c7':'#16a34a');
-    ctx.fillStyle=hGrad;ctx.beginPath();ctx.arc(px,py,8.5,0,Math.PI*2);ctx.fill();
-    ctx.restore();
-    // Cute Eyes & Blush
-    const ex=p.fx*2,ey=p.fy*1.5;
-    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(px-3+ex,py-1+ey,2.4,0,Math.PI*2);ctx.arc(px+3+ex,py-1+ey,2.4,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#0f172a';ctx.beginPath();ctx.arc(px-3+ex*1.2,py-1+ey*1.2,1.3,0,Math.PI*2);ctx.arc(px+3+ex*1.2,py-1+ey*1.2,1.3,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='rgba(244,114,182,.6)';ctx.beginPath();ctx.arc(px-5,py+2,1.6,0,Math.PI*2);ctx.arc(px+5,py+2,1.6,0,Math.PI*2);ctx.fill();
-  }
+  const px=(p.x+p.dx*p.pr+.5)*S,py=(p.y+p.dy*p.pr+.5)*S;
+  if(invT===0||Math.floor(invT/5)%2===0)drawChibiPlayer(px,py);
 
-  // Draw Cute Ghosts
-  gs.forEach((g,idx)=>{
-    const gx=(g.x+g.dx*g.pr+.5)*S,gy=(g.y+g.dy*g.pr+.5)*S+Math.cos(tick*.15+idx)*1.3,rad=8.5;
-    ctx.save();
-    ctx.shadowColor=frzT>0?'#7dd3fc':g.c;ctx.shadowBlur=12;
-    ctx.fillStyle=frzT>0?'#7dd3fc':g.c;
-    ctx.beginPath();ctx.arc(gx,gy-1.5,rad,Math.PI,0);
-    const w=Math.sin(tick*.25+idx)*1.5;
-    ctx.lineTo(gx+rad,gy+rad*.85);ctx.lineTo(gx+rad*.4,gy+rad*.55+w);ctx.lineTo(gx,gy+rad*.85-w);ctx.lineTo(gx-rad*.4,gy+rad*.55+w);ctx.lineTo(gx-rad,gy+rad*.85);
-    ctx.fill();ctx.restore();
-    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(gx-3,gy-1.5,2.3,0,Math.PI*2);ctx.arc(gx+3,gy-1.5,2.3,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#0f172a';ctx.beginPath();ctx.arc(gx-3+g.dx,gy-1.5+g.dy,1.2,0,Math.PI*2);ctx.arc(gx+3+g.dx,gy-1.5+g.dy,1.2,0,Math.PI*2);ctx.fill();
-  });
+  const gx=(ghost.x+ghost.dx*ghost.pr+.5)*S,gy=(ghost.y+ghost.dy*ghost.pr+.5)*S;
+  drawKawaiiGhost(gx,gy);
 
-  // Draw Sparkle Particles
   parts.forEach(pt=>{
-    ctx.globalAlpha=pt.life/22;ctx.fillStyle=pt.col;
+    ctx.globalAlpha=pt.life/24;ctx.fillStyle=pt.col;
     ctx.beginPath();ctx.arc(pt.x,pt.y,2.2,0,Math.PI*2);ctx.fill();
   });
   ctx.globalAlpha=1;
