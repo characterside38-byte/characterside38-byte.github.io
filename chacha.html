@@ -3,14 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Chacha Ruko Toh 3D</title>
+<title>Chacha Ruko Toh 3D — Story Mode</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;user-select:none}
 body{background:#04060b;color:#fff;font-family:system-ui,sans-serif;height:100dvh;overflow:hidden;touch-action:none}
 #hud{position:fixed;top:10px;left:10px;right:10px;display:flex;justify-content:space-between;align-items:center;z-index:10;pointer-events:none}
 .pill{background:rgba(15,23,42,.88);backdrop-filter:blur(8px);border:1px solid rgba(250,204,21,.45);padding:6px 12px;border-radius:99px;font-weight:800;font-size:13px;box-shadow:0 4px 15px rgba(0,0,0,.6)}
 .btn-top{pointer-events:auto;background:#facc15;color:#060b19;border:none;padding:6px 12px;border-radius:99px;font-weight:900;font-size:12px}
-#gameover{display:none;position:fixed;top:42%;left:50%;transform:translate(-50%,-50%);background:rgba(15,23,42,.92);border:2px solid #facc15;padding:18px 24px;border-radius:16px;text-align:center;z-index:20}
+#overlay{position:fixed;inset:0;background:rgba(4,6,11,.78);backdrop-filter:blur(4px);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:20;text-align:center;padding:20px}
+#overlay h1{color:#facc15;font-size:1.7rem;margin-bottom:8px;text-shadow:0 2px 12px rgba(250,204,21,.4)}
+#overlay p{color:#cbd5e1;font-size:14px;margin-bottom:18px;max-width:300px}
+.start-btn{background:linear-gradient(135deg,#facc15,#f59e0b);color:#060b19;border:none;padding:13px 28px;border-radius:99px;font-weight:900;font-size:16px;box-shadow:0 0 25px rgba(250,204,21,.5)}
+#skipBtn{display:none;position:fixed;bottom:52px;right:14px;background:rgba(15,23,42,.85);border:1px solid #facc15;color:#facc15;padding:6px 14px;border-radius:99px;font-weight:800;font-size:12px;z-index:15}
 #tip{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);color:#94a3b8;font-size:12px;font-weight:700;z-index:10;text-align:center;width:92%}
 </style>
 </head>
@@ -20,32 +24,40 @@ body{background:#04060b;color:#fff;font-family:system-ui,sans-serif;height:100dv
   <div class="pill">🪙 <b id="cn">0</b></div>
   <div style="display:flex;gap:5px;pointer-events:auto">
     <button class="btn-top" style="background:#1e293b;color:#fff;border:1px solid #334155" id="sndBtn" onclick="toggleSnd()">🔊</button>
-    <button class="btn-top" onclick="resetGame()">Reset</button>
+    <button class="btn-top" onclick="startStory()">Restart</button>
   </div>
 </div>
 
-<div id="gameover">
-  <h2 style="color:#facc15;margin-bottom:6px">😂 Pakde Gaye Chacha!</h2>
-  <p style="font-size:13px;color:#cbd5e1;margin-bottom:12px">Tap screen or Reset to run again</p>
-  <button class="btn-top" onclick="resetGame()">▶ Play Again</button>
+<div id="overlay">
+  <h1 id="ovTitle">🏃 Chacha Ruko Toh 3D</h1>
+  <p id="ovSub">Watch the face-off & help Chacha escape!</p>
+  <button class="start-btn" onclick="startStory()">▶ Play Story</button>
 </div>
 
+<button id="skipBtn" onclick="skipIntro()">Skip Intro ⏭</button>
 <div id="tip">👆 Swipe Left/Right • Up: Jump • Down: Slide</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-const memeAudio = new Audio('chacha.mp4?v=1');
-memeAudio.loop = true;
+// =========================================================
+// 🎵 STORY AUDIO ENGINE (0-6.5s Intro, then 6.5s-End Loop)
+// =========================================================
+const LOOP_START = 6.5; // 6.5 second ke baad ka audio lagatar loop hoga
+const memeAudio = new Audio('chacha.mp4?v=2');
+memeAudio.playsInline = true;
 memeAudio.volume = 1.0;
 
+// Jab audio khatam ho, toh 0 se nahi balki 6.5s se loop kare!
+memeAudio.addEventListener('ended', () => {
+  memeAudio.currentTime = LOOP_START;
+  if (snd && mode === 'run') memeAudio.play().catch(() => {});
+});
+
 let snd = true, actx = null;
-function startMemeAudio() {
-  if (snd && memeAudio.paused) memeAudio.play().catch(() => {});
-}
 function toggleSnd() {
   snd = !snd;
   document.getElementById('sndBtn').textContent = snd ? '🔊' : '🔇';
-  if (snd) startMemeAudio();
+  if (snd && mode !== 'wait') memeAudio.play().catch(() => {});
   else memeAudio.pause();
 }
 
@@ -60,6 +72,9 @@ function beep(freq, dur = 0.1) {
   o.connect(g); g.connect(actx.destination); o.start(); o.stop(t + dur);
 }
 
+// =========================================================
+// 🌃 NIGHT HIGHWAY 3D SCENE
+// =========================================================
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x05070d);
 scene.fog = new THREE.FogExp2(0x05070d, 0.016);
@@ -78,8 +93,8 @@ window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-scene.add(new THREE.AmbientLight(0x334155, 0.85));
-const spot = new THREE.DirectionalLight(0xfef08a, 1.1);
+scene.add(new THREE.AmbientLight(0x334155, 0.9));
+const spot = new THREE.DirectionalLight(0xfef08a, 1.15);
 spot.position.set(10, 24, 12); spot.castShadow = true;
 spot.shadow.mapSize.width = 1024; spot.shadow.mapSize.height = 1024;
 const d = 24;
@@ -126,6 +141,9 @@ for (let i = 0; i < 22; i++) {
   scene.add(lampGrp); lamps.push(lampGrp);
 }
 
+// =========================================================
+// 🏃 CHACHA & CHASER BOY CHARACTERS
+// =========================================================
 function buildChacha() {
   const grp = new THREE.Group();
   const skinMat = new THREE.MeshStandardMaterial({ color: 0xd99b66, roughness: 0.55 });
@@ -187,6 +205,9 @@ function buildChaserBoy() {
 const chacha = buildChacha(); scene.add(chacha.grp);
 const boy = buildChaserBoy(); scene.add(boy.grp);
 
+// =========================================================
+// 🚧 HIGHWAY OBSTACLES & COINS
+// =========================================================
 let items = [];
 const coinGeo = new THREE.CylinderGeometry(0.42, 0.42, 0.14, 16).rotateX(Math.PI / 2);
 const coinMat = new THREE.MeshStandardMaterial({ color: 0xfacc15, emissive: 0xca8a04, emissiveIntensity: 0.5, metalness: 0.8 });
@@ -228,26 +249,55 @@ function spawnRow(zPos) {
   });
 }
 
-let dist = 0, coins = 0, spd = 0.62, over = false, tick = 0;
-let laneIdx = 1, curX = 0, py = 0, vy = 0, slideT = 0, boyZ = 3.2, nextZ = -35;
+// =========================================================
+// 🎬 STORY CUTSCENE + RUNNING GAMEPLAY STATE
+// =========================================================
+let mode = 'wait'; // 'wait' -> 'intro' (0 to 6.5s) -> 'run' -> 'over'
+let introTimer = 0, dist = 0, coins = 0, spd = 0.62, tick = 0;
+let laneIdx = 1, curX = 0, py = 0, vy = 0, slideT = 0, boyZ = 2.8, nextZ = -45;
 
-function resetGame() {
+function startStory() {
   items.forEach(i => scene.remove(i.mesh)); items = [];
-  dist = 0; coins = 0; spd = 0.62; over = false;
-  laneIdx = 1; curX = 0; py = 0; vy = 0; slideT = 0; boyZ = 3.2; nextZ = -35;
-  document.getElementById('gameover').style.display = 'none';
-  startMemeAudio();
+  mode = 'intro';
+  introTimer = 0;
+  dist = 0; coins = 0; spd = 0.62;
+  laneIdx = 1; curX = 0; py = 0; vy = 0; slideT = 0; boyZ = 2.6; nextZ = -45;
+
+  // Position Chacha & Boy Face-to-Face at Start!
+  chacha.grp.position.set(0, 0, 0);
+  chacha.grp.rotation.y = Math.PI; // Chacha facing towards the Boy (+Z)
+  chacha.grp.scale.set(1, 1, 1);
+
+  boy.grp.visible = true;
+  boy.grp.position.set(0, 0, 2.5);
+  boy.grp.rotation.y = 0; // Boy facing towards Chacha (-Z)
+
+  document.getElementById('overlay').style.display = 'none';
+  document.getElementById('skipBtn').style.display = 'block';
+
+  memeAudio.currentTime = 0;
+  if (snd) memeAudio.play().catch(() => {});
 }
 
+function skipIntro() {
+  if (mode !== 'intro') return;
+  mode = 'run';
+  chacha.grp.rotation.y = 0; // Chacha turns around & sprints forward!
+  document.getElementById('skipBtn').style.display = 'none';
+  if (memeAudio.currentTime < LOOP_START) {
+    memeAudio.currentTime = LOOP_START;
+  }
+}
+
+// Controls (Only active in 'run' mode)
 let sx = 0, sy = 0;
 window.addEventListener('touchstart', e => {
-  startMemeAudio();
-  if (over) { resetGame(); return; }
+  if (mode !== 'run') return;
   if (e.touches[0]) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }
 }, { passive: true });
 
 window.addEventListener('touchend', e => {
-  if (over || !e.changedTouches[0]) return;
+  if (mode !== 'run' || !e.changedTouches[0]) return;
   const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
   if (Math.abs(dx) < 16 && Math.abs(dy) < 16) return;
   if (Math.abs(dx) > Math.abs(dy)) {
@@ -260,8 +310,7 @@ window.addEventListener('touchend', e => {
 });
 
 window.addEventListener('keydown', e => {
-  startMemeAudio();
-  if (over) { resetGame(); return; }
+  if (mode !== 'run') return;
   const k = e.key.toLowerCase();
   if ((k === 'arrowleft' || k === 'a') && laneIdx > 0) laneIdx--;
   else if ((k === 'arrowright' || k === 'd') && laneIdx < 2) laneIdx++;
@@ -269,16 +318,62 @@ window.addEventListener('keydown', e => {
   else if (k === 'arrowdown' || k === 's') { slideT = 32; if (py > 0) vy = -0.5; }
 });
 
+// =========================================================
+// 🔄 MAIN 60FPS ANIMATION LOOP
+// =========================================================
 const clock = new THREE.Clock();
 function animate() {
   requestAnimationFrame(animate);
   const dt = Math.min(clock.getDelta(), 0.05);
   tick++;
 
-  if (!over) {
+  if (mode === 'wait') {
+    // Preview idle pose before Start
+    chacha.grp.position.set(0, 0, 0);
+    chacha.grp.rotation.y = Math.PI;
+    boy.grp.position.set(0, 0, 2.5);
+    camera.position.set(3.2, 2.4, 3.8);
+    camera.lookAt(0, 1.5, 1.2);
+  }
+  else if (mode === 'intro') {
+    // 0 to 6.5 Seconds: Face-to-Face Conversation Cutscene!
+    introTimer += dt;
+
+    // Subtle talking / hand-gesturing animation for Chacha & Boy
+    chacha.legL.rotation.x = 0; chacha.legR.rotation.x = 0;
+    chacha.armL.rotation.x = Math.sin(tick * 0.14) * 0.25;
+    chacha.armR.rotation.x = -0.4 + Math.cos(tick * 0.18) * 0.35;
+    chacha.grp.position.y = Math.abs(Math.sin(tick * 0.08)) * 0.04;
+
+    boy.legL.rotation.x = 0; boy.legR.rotation.x = 0;
+    boy.armL.rotation.x = Math.cos(tick * 0.15) * 0.25;
+    boy.armR.rotation.x = 0.85 + Math.sin(tick * 0.12) * 0.1; // Holding camera phone up!
+
+    // Smooth Side-Angle Cinematic Camera showing both Face-to-Face
+    const camAngle = 0.35 + Math.sin(introTimer * 0.4) * 0.15;
+    camera.position.x = Math.sin(camAngle) * 4.2;
+    camera.position.y = 2.35;
+    camera.position.z = 1.25 + Math.cos(camAngle) * 3.2;
+    camera.lookAt(0, 1.55, 1.25);
+
+    // At 6.5s (or when audio reaches 6.5s), Chacha turns and runs!
+    const audioTime = memeAudio.currentTime || introTimer;
+    if (introTimer >= LOOP_START || audioTime >= LOOP_START) {
+      skipIntro();
+    }
+  }
+  else if (mode === 'run') {
+    // Safety loop check: never let audio go back before 6.5s during run
+    if (memeAudio.duration && memeAudio.currentTime >= memeAudio.duration - 0.15) {
+      memeAudio.currentTime = LOOP_START;
+    }
+
     const step = spd * 60 * dt;
     dist += step * 2.2;
     spd = Math.min(1.18, 0.62 + dist * 0.00004);
+
+    // Smooth turn from Pi (facing boy) to 0 (facing forward road)
+    chacha.grp.rotation.y *= Math.pow(0.01, dt);
 
     const targetX = LANES[laneIdx];
     curX += (targetX - curX) * 14 * dt;
@@ -317,8 +412,14 @@ function animate() {
             scene.remove(it.mesh); items.splice(i, 1);
             beep(140, 0.25);
             if (it.type === 'truck' || boyZ < 2.5) {
-              over = true; boyZ = 1.1;
-              document.getElementById('gameover').style.display = 'block';
+              // Caught! Stop run and show Story Restart screen
+              mode = 'over';
+              boyZ = 1.1;
+              memeAudio.pause();
+              document.getElementById('ovTitle').textContent = '😂 Pakde Gaye Chacha!';
+              document.getElementById('ovSub').textContent = `Score: ${Math.floor(dist)}m • Coins: ${coins}`;
+              document.querySelector('.start-btn').textContent = '🔄 Restart Story';
+              document.getElementById('overlay').style.display = 'flex';
             } else {
               boyZ = 1.75;
             }
@@ -332,6 +433,7 @@ function animate() {
       }
     }
 
+    // Running Animations
     const run = Math.sin(tick * 0.3) * 0.8;
     chacha.legL.rotation.x = run; chacha.legR.rotation.x = -run;
     chacha.armL.rotation.x = -run * 0.85; chacha.armR.rotation.x = run * 0.85;
@@ -346,9 +448,10 @@ function animate() {
     boy.grp.visible = boyZ < 5.6 && py < 2.0;
     boy.grp.position.set(curX, Math.abs(Math.cos(tick * 0.36)) * 0.15, boyZ);
 
-    camera.position.x += (curX * 0.55 - camera.position.x) * 7 * dt;
-    camera.position.y += (3.8 + py * 0.5 - camera.position.y) * 7 * dt;
-    camera.position.z = 7.0;
+    // Chase Camera behind Chacha
+    camera.position.x += (curX * 0.55 + Math.sin(tick * 0.25) * 0.06 - camera.position.x) * 7 * dt;
+    camera.position.y += (3.8 + py * 0.5 + Math.abs(Math.cos(tick * 0.3)) * 0.08 - camera.position.y) * 7 * dt;
+    camera.position.z += (7.0 - camera.position.z) * 5 * dt;
     camera.lookAt(curX * 0.35, 1.5 + py * 0.35, -10);
 
     document.getElementById('sc').textContent = Math.floor(dist);
