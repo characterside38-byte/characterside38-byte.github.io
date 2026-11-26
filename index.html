@@ -3,52 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Aeriopox Hub — Movies, Anime, 3D Games & Videos</title>
+<title>Aeriopox Hub — Movies, Anime, Games & Videos</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}
 body{background:#050816;color:#f8fafc;padding-bottom:75px}
-header{background:linear-gradient(135deg,#0f172a,#1e1b4b);padding:16px 14px;text-align:center;border-bottom:1px solid #1e293b}
-header h1{font-size:1.35rem;font-weight:900;background:linear-gradient(90deg,#38bdf8,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-header p{font-size:.78rem;color:#94a3b8;margin-top:4px}
-.yt-bar{display:inline-flex;align-items:center;gap:6px;margin-top:10px;background:#ef4444;color:#fff;padding:7px 14px;border-radius:99px;font-size:.78rem;font-weight:800;text-decoration:none}
-.ad-box{display:flex;justify-content:center;align-items:center;margin:10px auto;min-height:52px;overflow:hidden}
-.tabs{display:flex;gap:6px;overflow-x:auto;padding:10px 12px;background:#0b1120;position:sticky;top:0;z-index:20;border-bottom:1px solid #1e293b}
+header{background:linear-gradient(135deg,#0f172a,#1e1b4b);padding:14px;text-align:center;border-bottom:1px solid #1e293b}
+header h1{font-size:1.25rem;font-weight:900;color:#38bdf8}
+header p{font-size:.76rem;color:#94a3b8;margin-top:3px}
+.yt{display:inline-block;margin-top:8px;background:#ef4444;color:#fff;padding:6px 14px;border-radius:99px;font-size:.76rem;font-weight:800;text-decoration:none}
+.ad{display:flex;justify-content:center;margin:8px auto;min-height:50px;overflow:hidden}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:8px 10px;background:#0b1120;position:sticky;top:0;z-index:20;border-bottom:1px solid #1e293b}
 .tabs::-webkit-scrollbar{display:none}
-.tab{background:#1e293b;color:#cbd5e1;border:none;padding:8px 14px;border-radius:99px;font-size:.8rem;font-weight:700;white-space:nowrap;cursor:pointer}
+.tab{background:#1e293b;color:#cbd5e1;border:none;padding:7px 13px;border-radius:99px;font-size:.78rem;font-weight:700;white-space:nowrap}
 .tab.active{background:#38bdf8;color:#060b19}
-.search-wrap{display:flex;gap:8px;padding:10px 12px;max-width:720px;margin:0 auto}
-.search-wrap input{flex:1;background:#0f172a;border:1px solid #334155;color:#fff;padding:10px 12px;border-radius:10px;font-size:.85rem;outline:none}
-.search-wrap button{background:#38bdf8;color:#060b19;border:none;padding:0 16px;border-radius:10px;font-weight:800;cursor:pointer}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;padding:10px 12px;max-width:1100px;margin:0 auto}
-.card{background:#0f172a;border:1px solid #1e293b;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:transform .15s}
-.card:active{transform:scale(.97)}
-.poster{width:100%;height:205px;object-fit:cover;background:#1e293b;display:flex;align-items:center;justify-content:center;font-size:3rem}
-.info{padding:10px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
-.info h3{font-size:.86rem;font-weight:800;line-height:1.25;margin-bottom:5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.meta{font-size:.72rem;color:#94a3b8;margin-bottom:8px}
-.badge{display:inline-block;background:#1e293b;color:#38bdf8;font-size:.66rem;font-weight:700;padding:2px 6px;border-radius:6px;margin-bottom:6px}
-.btn{background:#38bdf8;color:#060b19;text-align:center;padding:7px;border-radius:8px;font-size:.76rem;font-weight:800}
-#detailModal,#player{display:none;position:fixed;inset:0;background:rgba(5,8,22,.96);z-index:100;overflow-y:auto}
-.modal-card{max-width:460px;margin:24px auto;background:#0f172a;border:1px solid #334155;border-radius:16px;padding:16px}
-.modal-card img{width:100%;max-height:280px;object-fit:cover;border-radius:12px;margin-bottom:12px}
-.modal-card h2{font-size:1.1rem;margin-bottom:8px;color:#38bdf8}
-.modal-card p{font-size:.82rem;color:#cbd5e1;margin-bottom:6px;line-height:1.45}
-.close-btn{width:100%;margin-top:12px;background:#ef4444;color:#fff;border:none;padding:10px;border-radius:10px;font-weight:800;cursor:pointer}
+.sw{display:flex;gap:6px;padding:8px 10px;max-width:700px;margin:0 auto}
+.sw input{flex:1;background:#0f172a;border:1px solid #334155;color:#fff;padding:9px 11px;border-radius:9px;font-size:.84rem;outline:none}
+.sw button{background:#38bdf8;color:#060b19;border:none;padding:0 14px;border-radius:9px;font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;padding:8px 10px;max-width:1100px;margin:0 auto}
+.card{background:#0f172a;border:1px solid #1e293b;border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.poster{width:100%;height:195px;object-fit:cover;background:#1e293b;display:flex;align-items:center;justify-content:center;font-size:2.8rem}
+.info{padding:9px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.badge{display:inline-block;background:#1e293b;color:#38bdf8;font-size:.65rem;font-weight:700;padding:2px 6px;border-radius:5px;margin-bottom:4px}
+.info h3{font-size:.84rem;font-weight:800;line-height:1.25;margin-bottom:4px}
+.meta{font-size:.7rem;color:#94a3b8;margin-bottom:7px}
+.btn{background:#38bdf8;color:#060b19;text-align:center;padding:6px;border-radius:7px;font-size:.75rem;font-weight:800}
+#modal,#player{display:none;position:fixed;inset:0;background:rgba(5,8,22,.96);z-index:100;overflow-y:auto}
+.mcard{max-width:440px;margin:20px auto;background:#0f172a;border:1px solid #334155;border-radius:14px;padding:14px}
+.mcard img{width:100%;max-height:250px;object-fit:cover;border-radius:10px;margin-bottom:10px}
+.mcard h2{font-size:1.05rem;color:#38bdf8;margin-bottom:6px}
+.mcard p{font-size:.8rem;color:#cbd5e1;margin-bottom:5px;line-height:1.4}
+.cbtn{width:100%;margin-top:10px;background:#ef4444;color:#fff;border:none;padding:9px;border-radius:9px;font-weight:800}
 #player{flex-direction:column}
-#pbar{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#0f172a;border-bottom:1px solid #1e293b}
-#pbar button{background:#ef4444;color:#fff;border:none;padding:6px 12px;border-radius:8px;font-weight:800}
+#pbar{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:#0f172a}
+#pbar button{background:#ef4444;color:#fff;border:none;padding:5px 11px;border-radius:7px;font-weight:800}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>⚡ AERIOPOX ENTERTAINMENT HUB</h1>
-  <p>Latest Movies, Trending Anime, 3D Games & Full Videos</p>
-  <a class="yt-bar" href="https://www.youtube.com/@x00m_y?sub_confirmation=1" onclick="return openYTApp(event)">▶ Subscribe @X00M_Y on YouTube</a>
+  <h1>⚡ AERIOPOX ENTERTAINMENT</h1>
+  <p>Latest Movies, Anime, 3D Games & Full Videos</p>
+  <a class="yt" href="https://www.youtube.com/@x00m_y?sub_confirmation=1" onclick="return openYT(event)">▶ Subscribe @X00M_Y</a>
 </header>
 
-<!-- Top Adsterra 320x50 Banner -->
-<div class="ad-box">
+<div class="ad">
   <script>atOptions={'key':'1c2ccff45aa6e572ceeb0a5c3115d34f','format':'iframe','height':50,'width':320,'params':{}};</script>
   <script src="https://bauval.org/22/1c2ccff45aa6e572ceeb0a5c3115d34f"></script>
 </div>
@@ -61,302 +59,134 @@ header p{font-size:.78rem;color:#94a3b8;margin-top:4px}
   <button class="tab" onclick="setTab('music',this)">🎵 Music</button>
 </div>
 
-<div class="search-wrap">
-  <input id="q" type="text" placeholder="Search any latest movie, anime, or song..." onkeyup="if(event.key==='Enter')doSearch()">
+<div class="sw">
+  <input id="q" type="text" placeholder="Search latest movie, anime, song..." onkeyup="if(event.key==='Enter')doSearch()">
   <button onclick="doSearch()">Search</button>
 </div>
 
 <div id="grid" class="grid"></div>
 
-<!-- Middle Adsterra Banner -->
-<div class="ad-box">
+<div class="ad">
   <script>atOptions={'key':'1c2ccff45aa6e572ceeb0a5c3115d34f','format':'iframe','height':50,'width':320,'params':{}};</script>
   <script src="https://bauval.org/22/1c2ccff45aa6e572ceeb0a5c3115d34f"></script>
 </div>
 
-<!-- Movie/Anime/Music Detail Modal -->
-<div id="detailModal">
-  <div class="modal-card">
-    <img id="dPoster" src="" alt="">
+<div id="modal">
+  <div class="mcard">
+    <img id="dImg" src="" alt="">
     <h2 id="dTitle"></h2>
     <div id="dStats"></div>
-    <p id="dDesc" style="margin-top:8px;color:#94a3b8"></p>
-    <a id="dActionBtn" href="https://araplhn.org/4/b9f04a7b59d53fec8ea462d70c3bf677" target="_blank" rel="noopener" class="btn" style="display:block;margin-top:12px;background:#22c55e;color:#fff;text-decoration:none;padding:10px">▶ Watch Explanation / Bonus Link</a>
-    <button class="close-btn" onclick="closeDetail()">✖ Close</button>
+    <p id="dDesc" style="margin-top:6px;color:#94a3b8"></p>
+    <a href="https://araplhn.org/4/b9f04a7b59d53fec8ea462d70c3bf677" target="_blank" rel="noopener" class="btn" style="display:block;margin-top:10px;background:#22c55e;color:#fff;text-decoration:none;padding:9px">▶ Watch Explanation / Bonus Link</a>
+    <button class="cbtn" onclick="document.getElementById('modal').style.display='none'">✖ Close</button>
   </div>
 </div>
 
-<!-- 3D Game & Video Player (With 5-Min Auto Ad Break) -->
 <div id="player">
-  <div id="pbar">
-    <span id="ptitle" style="font-weight:bold;color:#38bdf8">Player</span>
-    <button onclick="closeGame()">✖ Close</button>
-  </div>
-  <div style="position:relative;flex:1;width:100%;display:flex;flex-direction:column">
-    <iframe id="gframe" src="" style="flex:1;width:100%;border:none" allow="autoplay; fullscreen"></iframe>
-    <div id="adBreak" style="display:none;position:absolute;inset:0;background:rgba(5,8,22,0.96);z-index:50;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px">
-      <p style="color:#facc15;font-weight:900;font-size:1.1rem;margin-bottom:6px">⚡ SPONSOR BREAK</p>
-      <p style="color:#94a3b8;font-size:.82rem;margin-bottom:14px">Support free videos & games on Aeriopox Hub</p>
-      <div id="breakAdSlot" style="margin-bottom:16px"></div>
-      <a href="https://araplhn.org/4/b9f04a7b59d53fec8ea462d70c3bf677" target="_blank" rel="noopener" style="background:#38bdf8;color:#060b19;padding:10px 20px;border-radius:10px;font-weight:800;text-decoration:none;font-size:.85rem;margin-bottom:12px">🎁 Check Bonus Offer</a>
-      <button id="resumeBtn" disabled onclick="resumeVideo()" style="background:#334155;color:#94a3b8;border:none;padding:10px 24px;border-radius:10px;font-weight:800;font-size:.9rem">Wait 5s...</button>
-    </div>
-  </div>
+  <div id="pbar"><span id="ptitle" style="font-weight:bold;color:#38bdf8">Player</span><button onclick="closeGame()">✖ Close</button></div>
+  <iframe id="gframe" src="" style="flex:1;width:100%;border:none" allow="autoplay;fullscreen"></iframe>
 </div>
 
 <script>
-function openYTApp(e){
-  const ua = navigator.userAgent || '';
-  const webUrl = 'https://www.youtube.com/@x00m_y?sub_confirmation=1';
-  if(/Android/i.test(ua)){
-    e.preventDefault();
-    window.location.href = 'intent://www.youtube.com/@x00m_y#Intent;package=com.google.android.youtube;scheme=https;S.browser_fallback_url=' + encodeURIComponent(webUrl) + ';end';
-    return false;
-  } else if(/iPhone|iPad|iPod/i.test(ua)){
-    e.preventDefault();
-    window.location.href = 'youtube://www.youtube.com/@x00m_y';
-    setTimeout(() => { window.open(webUrl, '_blank'); }, 1200);
-    return false;
-  }
+function openYT(e){
+  const u=navigator.userAgent||'',w='https://www.youtube.com/@x00m_y?sub_confirmation=1';
+  if(/Android/i.test(u)){e.preventDefault();location.href='intent://www.youtube.com/@x00m_y#Intent;package=com.google.android.youtube;scheme=https;S.browser_fallback_url='+encodeURIComponent(w)+';end';return false;}
   return true;
 }
+function fb(el,t){el.onerror=null;el.src='https://placehold.co/300x420/1e293b/38bdf8?text='+encodeURIComponent(t.slice(0,16));}
 
-function fallbackImg(el, title){
-  el.onerror = null;
-  el.src = 'https://placehold.co/300x420/1e293b/38bdf8?text=' + encodeURIComponent(title.slice(0,18));
+const movies=[
+  {title:'Avengers: Doomsday (2026)',status:'Upcoming • Dec 2026',release:'Dec 18, 2026',rating:'9.4/10 ⭐',genre:'Action/Sci-Fi',img:'https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg',desc:'Robert Downey Jr. returns as Doctor Doom in the multiverse showdown.'},
+  {title:'Dune: Messiah (2026)',status:'Upcoming • Dec 2026',release:'Dec 2026',rating:'9.1/10 ⭐',genre:'Sci-Fi/Adventure',img:'https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg',desc:'Paul Atreides faces the consequences of his holy war on Arrakis.'},
+  {title:'Pushpa 2: The Rule',status:'Released • Hit',release:'Released',rating:'8.9/10 ⭐',genre:'Action/Drama',img:'https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg',desc:'Pushpa Raj expands his syndicate while clashing with SP Shekhawat.'},
+  {title:'Kalki 2898 AD',status:'Released • OTT',release:'Released',rating:'8.7/10 ⭐',genre:'Sci-Fi/Mythology',img:'https://image.tmdb.org/t/p/w500/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg',desc:'In future Kasi, Ashwatthama rises to protect the final avatar.'},
+  {title:'Spider-Man: Brand New Day',status:'Released • 2026',release:'July 2026',rating:'9.0/10 ⭐',genre:'Superhero',img:'https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg',desc:'Peter Parker starts a fresh chapter against street-level threats.'},
+  {title:'The Batman: Part II',status:'Released • 2026',release:'Oct 2026',rating:'9.1/10 ⭐',genre:'Crime/Action',img:'https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg',desc:'Gotham faces a frozen crisis as Bruce Wayne hunts a shadow syndicate.'}
+];
+
+const anime=[
+  {title:'One Piece: Elbaf Arc',status:'Ongoing • 2026',release:'Weekly Episodes',rating:'9.5/10 ⭐',genre:'Adventure',img:'https://cdn.myanimelist.net/images/anime/1244/138851.jpg',desc:'Straw Hat Pirates reach Elbaf and uncover Void Century secrets.'},
+  {title:'Solo Leveling Season 2',status:'Released • #1',release:'Released',rating:'9.3/10 ⭐',genre:'Action/Fantasy',img:'https://cdn.myanimelist.net/images/anime/1448/147351.jpg',desc:'Sung Jin-Woo unleashes the Shadow Army in the Jeju Island raid.'},
+  {title:'Demon Slayer: Infinity Castle',status:'Trending Movie',release:'Released',rating:'9.4/10 ⭐',genre:'Dark Fantasy',img:'https://cdn.myanimelist.net/images/anime/1765/135099.jpg',desc:'Hashira and Tanjiro enter Muzan’s Infinity Castle for the final war.'},
+  {title:'One-Punch Man Season 3',status:'Latest Season',release:'2026',rating:'9.0/10 ⭐',genre:'Action/Comedy',img:'https://cdn.myanimelist.net/images/anime/12/76049.jpg',desc:'Saitama enters Monster Association HQ as Garou awakens.'}
+];
+
+const music=[
+  {title:'Trending Phonk & Gaming Beats',status:'Viral 2026',release:'2026 Mix',rating:'🔥 Top Gaming',genre:'Phonk/Bass',img:'https://placehold.co/300x420/1e1b4b/38bdf8?text=PHONK+2026',desc:'High-energy bass beats for BGMI clutches and viral Shorts.'},
+  {title:'Arijit Singh Latest Hits 2026',status:'#1 Bollywood',release:'2026',rating:'🎵 Top Charts',genre:'Bollywood',img:'https://placehold.co/300x420/0f172a/f43f5e?text=ARIJIT+2026',desc:'Top Hindi romantic and heartbreak tracks of 2026.'},
+  {title:'Bhojpuri DJ Viral Reels Mix',status:'Trending Reels',release:'2026',rating:'🔥 Viral Audio',genre:'Bhojpuri Pop',img:'https://placehold.co/300x420/1e293b/facc15?text=BHOJPURI+DJ',desc:'Top Bhojpuri dance tracks trending on Reels and Shorts.'}
+];
+
+const games=[
+  {title:'Chacha Ruko Toh 3D',emoji:'🏃',tag:'Viral Meme',url:'chacha.html?v=3'},
+  {title:'Glass Bridge 3D',emoji:'🧊',tag:'Survival',url:'bridge.html'},
+  {title:'Galaxy Strike 3D',emoji:'🚀',tag:'Space Action',url:'space.html'},
+  {title:'Chibi Ghost Maze',emoji:'👻',tag:'Arcade',url:'ghost.html'}
+];
+
+const videos=[
+  {title:'Full HD Gameplay & Special Video (500MB)',tag:'Telegram Channel',url:'https://t.me/+APNA_CHANNEL_LINK_DAALO',img:'https://placehold.co/400x225/1e293b/38bdf8?text=▶+Watch+Full+Video'}
+];
+
+let tab='movie';
+const grid=document.getElementById('grid');
+
+function setTab(t,el){
+  tab=t;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  if(el)el.classList.add('active');
+  document.getElementById('q').value='';
+  render();
+}
+function doSearch(){render(document.getElementById('q').value.trim());}
+
+function draw(list,btn){
+  grid.innerHTML=list.map(x=>`<div class="card" onclick='show(${JSON.stringify(x).replace(/'/g,"&#39;")})'><img class="poster" src="${x.img}" onerror="fb(this,'${x.title.replace(/'/g,'')}')"><div class="info"><div><span class="badge">${x.status}</span><h3>${x.title}</h3><div class="meta">${x.release} • ${x.genre}</div></div><div class="btn">${btn}</div></div></div>`).join('');
 }
 
-// INSTANT LATEST MOVIES & UPCOMING RELEASES (Always loads in 0ms)
-const defaultMovies = [
-  {title:'Avengers: Doomsday (2026)', status:'Upcoming Mega Release', release:'Dec 18, 2026', rating:'9.4 / 10 ⭐', genre:'Action / Sci-Fi', extra:'Marvel Studios • Doctor Doom Saga', img:'https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg', desc:'Robert Downey Jr. returns to the MCU as Victor von Doom in the biggest multiverse showdown.'},
-  {title:'Dune: Messiah (2026)', status:'Upcoming Sci-Fi', release:'Dec 2026', rating:'9.1 / 10 ⭐', genre:'Sci-Fi / Adventure', extra:'Director: Denis Villeneuve', img:'https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg', desc:'Paul Atreides faces the consequences of his holy war across the known universe on Arrakis.'},
-  {title:'Pushpa 2: The Rule', status:'Released • Blockbuster', release:'Released (In Theatres/OTT)', rating:'8.9 / 10 ⭐', genre:'Action / Drama', extra:'Allu Arjun • Fahadh Faasil', img:'https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg', desc:'Pushpa Raj expands his red sandalwood syndicate while clashing with SP Bhanwar Singh Shekhawat.'},
-  {title:'Kalki 2898 AD', status:'Released • OTT Streaming', release:'Released', rating:'8.7 / 10 ⭐', genre:'Sci-Fi / Mythology', extra:'Prabhas • Amitabh Bachchan', img:'https://image.tmdb.org/t/p/w500/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg', desc:'In a dystopian future city of Kasi, Ashwatthama rises to protect the final avatar.'},
-  {title:'Spider-Man: Brand New Day (2026)', status:'Upcoming 2026', release:'July 2026', rating:'9.0 / 10 ⭐', genre:'Superhero / Action', extra:'Tom Holland • Marvel', img:'https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg', desc:'Peter Parker starts a fresh chapter in New York as street-level threats unite.'},
-  {title:'KGF: Chapter 3', status:'Upcoming Action', release:'Announced • In Production', rating:'9.2 / 10 ⭐', genre:'Action / Thriller', extra:'Yash • Prashanth Neel', img:'https://image.tmdb.org/t/p/w500/tBiUXvHS3HcZbQoQl8tU26243k3.jpg', desc:'Rocky Bhai’s international empire and the missing timeline between 1978 and 1981 revealed.'},
-  {title:'Deadpool & Wolverine', status:'Released • HD Available', release:'Released', rating:'8.8 / 10 ⭐', genre:'Action / Comedy', extra:'Ryan Reynolds • Hugh Jackman', img:'https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg', desc:'Wade Wilson teams up with a reluctant Wolverine to save his universe from the TVA.'},
-  {title:'The Batman: Part II (2026)', status:'Upcoming Thriller', release:'Oct 2026', rating:'9.1 / 10 ⭐', genre:'Crime / Action', extra:'Robert Pattinson • Matt Reeves', img:'https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg', desc:'Gotham faces a frozen crisis as Bruce Wayne investigates a new shadow syndicate.'}
-];
-
-const defaultAnime = [
-  {title:'One Piece: Elbaf Arc', status:'New Episodes Weekly', release:'Ongoing 2026', rating:'9.5 / 10 ⭐', genre:'Adventure / Shonen', extra:'Luffy, Zoro, Loki & Shanks', img:'https://cdn.myanimelist.net/images/anime/1244/138851.jpg', desc:'The Straw Hat Pirates reach the legendary land of giants, Elbaf, uncovering Void Century secrets.'},
-  {title:'Solo Leveling Season 2', status:'Released • Trending #1', release:'2025–2026', rating:'9.3 / 10 ⭐', genre:'Action / Fantasy', extra:'Sung Jin-Woo • Shadow Monarch', img:'https://cdn.myanimelist.net/images/anime/1448/147351.jpg', desc:'Sung Jin-Woo unlocks the true power of the Shadow Army in the Jeju Island raid.'},
-  {title:'Demon Slayer: Infinity Castle', status:'Movie Trilogy • Trending', release:'2025–2026', rating:'9.4 / 10 ⭐', genre:'Dark Fantasy / Action', extra:'Tanjiro & Hashira vs Muzan', img:'https://cdn.myanimelist.net/images/anime/1765/135099.jpg', desc:'The Demon Slayer Corps falls into Muzan Kibutsuji’s shifting Infinity Castle for the final battle.'},
-  {title:'Dragon Ball DAIMA', status:'Released • Complete', release:'Released', rating:'8.8 / 10 ⭐', genre:'Action / Adventure', extra:'Goku & Vegeta Mini Form', img:'https://cdn.myanimelist.net/images/anime/1511/144248.jpg', desc:'Goku and friends travel to the Demon Realm after a mysterious wish turns them small.'},
-  {title:'One-Punch Man Season 3', status:'Latest Season', release:'2025–2026', rating:'9.0 / 10 ⭐', genre:'Action / Comedy', extra:'Saitama vs Monster Association', img:'https://cdn.myanimelist.net/images/anime/12/76049.jpg', desc:'Saitama enters the Monster Association headquarters while Garou evolves into his ultimate form.'},
-  {title:'That Time I Got Reincarnated as a Slime S4', status:'New Season', release:'2026', rating:'8.9 / 10 ⭐', genre:'Isekai / Fantasy', extra:'Rimuru Tempest', img:'https://cdn.myanimelist.net/images/anime/1694/141463.jpg', desc:'Rimuru expands the Jura Tempest Federation as new Western Nations conspiracies emerge.'}
-];
-
-const defaultMusic = [
-  {title:'Trending Phonk & Gaming Beats 2026', status:'Viral Gaming Audio', release:'2026 Mix', rating:'🔥 Top Gaming Track', genre:'Brazilian Phonk / Bass', extra:'Best for BGMI & Shorts', img:'https://placehold.co/300x420/1e1b4b/38bdf8?text=PHONK+2026', desc:'High-energy phonk bass beats used in viral gaming montages and clutch Shorts.'},
-  {title:'Arijit Singh — Latest Romantic Hits', status:'Top Bollywood 2026', release:'2026', rating:'🎵 #1 India Charts', genre:'Bollywood / Soul', extra:'Arijit Singh', img:'https://placehold.co/300x420/0f172a/f43f5e?text=ARIJIT+HITS', desc:'Top trending Hindi romantic and heartbreak tracks of 2026.'},
-  {title:'Bhojpuri DJ & Viral Reels Mix', status:'Trending Reels Audio', release:'2026', rating:'🔥 Viral on Shorts', genre:'Bhojpuri Pop / DJ', extra:'Pawan Singh • Khesari Lal', img:'https://placehold.co/300x420/1e293b/facc15?text=BHOJPURI+DJ', desc:'Most-used Bhojpuri dance and attitude tracks on Instagram Reels and YouTube Shorts.'},
-  {title:'Dark Horror & Suspense BGM', status:'Storytelling Audio', release:'2026', rating:'👻 Creator Favorite', genre:'Cinematic / Horror', extra:'No-Copyright Vibe', img:'https://placehold.co/300x420/090d16/a855f7?text=HORROR+BGM', desc:'Chilling background score for horror stories, mystery videos, and thriller edits.'}
-];
-
-const games = [
-  {title:'Chacha Ruko Toh 3D', emoji:'🏃', tag:'Viral Meme', url:'chacha.html?v=3'},
-  {title:'Glass Bridge 3D', emoji:'🧊', tag:'Survival', url:'bridge.html'},
-  {title:'Galaxy Strike 3D', emoji:'🚀', tag:'Space Action', url:'space.html'},
-  {title:'Chibi Ghost Maze', emoji:'👻', tag:'Arcade', url:'ghost.html'}
-];
-
-// YAHAN APNE TELEGRAM CHANNEL KA INVITE LINK YA VIDEO LINK DAALO
-const videos = [
-  {
-    title: 'Full HD Gameplay & Special Video (500MB)',
-    tag: 'Telegram Channel • Direct Access',
-    tgUrl: 'https://t.me/+APNA_CHANNEL_INVITE_LINK_YAHAN_DAALO',
-    thumb: 'https://placehold.co/400x225/1e293b/38bdf8?text=▶+Watch+Full+Video'
-  }
-];
-
-let currentTab = 'movie';
-let breakTimer = null;
-const grid = document.getElementById('grid');
-
-function setTab(tab, el){
-  currentTab = tab;
-  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-  if(el) el.classList.add('active');
-  document.getElementById('q').value = '';
-  loadContent();
-}
-
-function doSearch(){
-  loadContent(document.getElementById('q').value.trim());
-}
-
-function renderCards(items, btnText){
-  grid.innerHTML = items.map(item => `
-    <div class="card" onclick='showDetail(${JSON.stringify(item).replace(/'/g,"&#39;")})'>
-      <img class="poster" src="${item.img}" alt="${item.title}" onerror="fallbackImg(this,'${item.title.replace(/'/g,'')}')">
-      <div class="info">
-        <div>
-          <span class="badge">${item.status}</span>
-          <h3>${item.title}</h3>
-          <div class="meta">${item.release} • ${item.genre}</div>
-        </div>
-        <div class="btn">${btnText}</div>
-      </div>
-    </div>`).join('');
-}
-
-async function loadContent(query=''){
-  if(currentTab === 'game'){
-    const list = games.filter(g => g.title.toLowerCase().includes(query.toLowerCase()));
-    grid.innerHTML = list.map(g => `
-      <div class="card" onclick="openGame('${g.url}','${g.title}', false)">
-        <div class="poster">${g.emoji}</div>
-        <div class="info">
-          <h3>${g.title}</h3>
-          <div class="meta">${g.tag} • 3D Browser</div>
-          <div class="btn">▶ Play Now</div>
-        </div>
-      </div>`).join('') + `
-      <a class="card" href="https://araplhn.org/4/b9f04a7b59d53fec8ea462d70c3bf677" target="_blank" rel="noopener" style="text-decoration:none;color:#fff">
-        <div class="poster">🎁</div>
-        <div class="info">
-          <h3>More 3D Games</h3>
-          <div class="meta">Bonus Collection</div>
-          <div class="btn" style="background:#facc15">⚡ Unlock</div>
-        </div>
-      </a>`;
+async function render(q=''){
+  if(tab==='game'){
+    grid.innerHTML=games.filter(g=>g.title.toLowerCase().includes(q.toLowerCase())).map(g=>`<div class="card" onclick="openGame('${g.url}','${g.title}')"><div class="poster">${g.emoji}</div><div class="info"><h3>${g.title}</h3><div class="meta">${g.tag}</div><div class="btn">▶ Play Now</div></div></div>`).join('')+`<a class="card" href="https://araplhn.org/4/b9f04a7b59d53fec8ea462d70c3bf677" target="_blank" style="text-decoration:none;color:#fff"><div class="poster">🎁</div><div class="info"><h3>More Games</h3><div class="meta">Bonus Pack</div><div class="btn" style="background:#facc15">⚡ Unlock</div></div></a>`;
     return;
   }
-
-  if(currentTab === 'video'){
-    const list = videos.filter(v => v.title.toLowerCase().includes(query.toLowerCase()));
-    grid.innerHTML = list.map(v => `
-      <a class="card" href="${v.tgUrl}" target="_blank" rel="noopener" style="text-decoration:none;color:#fff">
-        <img class="poster" src="${v.thumb}" alt="${v.title}">
-        <div class="info">
-          <h3>${v.title}</h3>
-          <div class="meta">📺 ${v.tag}</div>
-          <div class="btn" style="background:#ef4444;color:#fff">▶ Watch on Telegram</div>
-        </div>
-      </a>`).join('');
+  if(tab==='video'){
+    grid.innerHTML=videos.map(v=>`<a class="card" href="${v.url}" target="_blank" style="text-decoration:none;color:#fff"><img class="poster" src="${v.img}"><div class="info"><h3>${v.title}</h3><div class="meta">📺 ${v.tag}</div><div class="btn" style="background:#ef4444;color:#fff">▶ Watch on Telegram</div></div></a>`).join('');
     return;
   }
-
-  // Agar search khali hai toh turant latest curated list dikhao (0ms delay)
-  if(!query){
-    if(currentTab === 'movie') renderCards(defaultMovies, 'Movie Details');
-    if(currentTab === 'anime') renderCards(defaultAnime, 'Anime Details');
-    if(currentTab === 'music') renderCards(defaultMusic, 'Track Info');
+  if(!q){
+    if(tab==='movie')draw(movies,'Movie Info');
+    if(tab==='anime')draw(anime,'Anime Info');
+    if(tab==='music')draw(music,'Track Info');
     return;
   }
-
-  // Live Auto-Fetch jab user kisi bhi nayi movie/anime/song ko search kare
-  grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#38bdf8;padding:20px">🔍 Searching latest database...</p>';
-  try {
-    if(currentTab === 'anime'){
-      const res = await (await fetch(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}&limit=12`)).json();
-      const items = (res.data||[]).map(a => ({
-        title: a.title,
-        status: a.status || 'Anime',
-        release: a.aired?.string || 'N/A',
-        rating: a.score ? a.score + ' / 10 ⭐' : 'Trending',
-        genre: (a.genres||[]).map(g=>g.name).join(', ') || 'Anime',
-        extra: 'Episodes: ' + (a.episodes || 'Ongoing'),
-        img: a.images?.jpg?.large_image_url || a.images?.jpg?.image_url || '',
-        desc: a.synopsis || 'No synopsis available.'
-      }));
-      if(items.length){ renderCards(items, 'Anime Details'); return; }
-    } else {
-      // TVMaze API (100% CORS-free, fast posters & release info for Movies/Shows)
-      const res = await (await fetch(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(query)}`)).json();
-      const items = (res||[]).slice(0,12).map(x => {
-        const s = x.show;
-        return {
-          title: s.name,
-          status: s.status === 'Running' ? 'Ongoing / Latest' : (s.premiered ? 'Released (' + s.premiered.slice(0,4) + ')' : 'Upcoming'),
-          release: s.premiered || 'Announced',
-          rating: s.rating?.average ? s.rating.average + ' / 10 ⭐' : 'Popular',
-          genre: (s.genres||[]).join(', ') || 'Entertainment',
-          extra: 'Language: ' + (s.language || 'English/Hindi'),
-          img: s.image?.medium || '',
-          desc: (s.summary || 'Tap below to watch explanation or bonus link.').replace(/<[^>]*>/g,'')
-        };
-      });
-      if(items.length){ renderCards(items, 'View Details'); return; }
+  grid.innerHTML='<p style="grid-column:1/-1;text-align:center;color:#38bdf8;padding:16px">🔍 Searching...</p>';
+  try{
+    if(tab==='anime'){
+      const r=await(await fetch('https://api.jikan.moe/v4/anime?q='+encodeURIComponent(q)+'&limit=10')).json();
+      const items=(r.data||[]).map(a=>({title:a.title,status:a.status||'Anime',release:a.aired?.string||'N/A',rating:(a.score||'8.5')+'/10 ⭐',genre:(a.genres||[]).map(g=>g.name).join(', ')||'Anime',img:a.images?.jpg?.image_url||'',desc:a.synopsis||'Trending anime series.'}));
+      if(items.length)return draw(items,'Anime Info');
+    }else{
+      const r=await(await fetch('https://api.tvmaze.com/search/shows?q='+encodeURIComponent(q))).json();
+      const items=(r||[]).slice(0,10).map(x=>({title:x.show.name,status:x.show.premiered?'Released ('+x.show.premiered.slice(0,4)+')':'Upcoming',release:x.show.premiered||'Announced',rating:(x.show.rating?.average||'8.2')+'/10 ⭐',genre:(x.show.genres||[]).join(', ')||'Entertainment',img:x.show.image?.medium||'',desc:(x.show.summary||'Watch full details & explanation below.').replace(/<[^>]*>/g,'')}));
+      if(items.length)return draw(items,'View Details');
     }
-    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#94a3b8;padding:20px">No exact match found. Try another name!</p>';
-  } catch(e){
-    if(currentTab === 'movie') renderCards(defaultMovies, 'Movie Details');
-    if(currentTab === 'anime') renderCards(defaultAnime, 'Anime Details');
-    if(currentTab === 'music') renderCards(defaultMusic, 'Track Info');
-  }
+    grid.innerHTML='<p style="grid-column:1/-1;text-align:center;color:#94a3b8;padding:16px">No result found!</p>';
+  }catch(e){draw(movies,'Movie Info');}
 }
 
-function showDetail(d){
-  document.getElementById('dTitle').textContent = d.title;
-  const imgEl = document.getElementById('dPoster');
-  imgEl.src = d.img;
-  imgEl.onerror = () => fallbackImg(imgEl, d.title);
-  document.getElementById('dStats').innerHTML = `
-    <p><b>📌 Status:</b> ${d.status}</p>
-    <p><b>📅 Release:</b> ${d.release}</p>
-    <p><b>⭐ Rating:</b> ${d.rating}</p>
-    <p><b>🎭 Genre:</b> ${d.genre}</p>
-    <p><b>📊 Info:</b> ${d.extra}</p>`;
-  document.getElementById('dDesc').textContent = d.desc;
-  document.getElementById('detailModal').style.display = 'block';
+function show(d){
+  document.getElementById('dTitle').textContent=d.title;
+  const i=document.getElementById('dImg');i.src=d.img;i.onerror=()=>fb(i,d.title);
+  document.getElementById('dStats').innerHTML=`<p><b>📌 Status:</b> ${d.status}</p><p><b>📅 Release:</b> ${d.release}</p><p><b>⭐ Rating:</b> ${d.rating}</p><p><b>🎭 Genre:</b> ${d.genre}</p>`;
+  document.getElementById('dDesc').textContent=d.desc;
+  document.getElementById('modal').style.display='block';
 }
-function closeDetail(){ document.getElementById('detailModal').style.display = 'none'; }
+function openGame(u,t){document.getElementById('ptitle').textContent=t;document.getElementById('gframe').src=u;document.getElementById('player').style.display='flex';}
+function closeGame(){document.getElementById('gframe').src='';document.getElementById('player').style.display='none';}
 
-function openGame(url, title, isVideo=false){
-  document.getElementById('ptitle').textContent = title;
-  document.getElementById('gframe').src = url;
-  document.getElementById('adBreak').style.display = 'none';
-  document.getElementById('player').style.display = 'flex';
-  clearInterval(breakTimer);
-  if(isVideo) breakTimer = setInterval(triggerAdBreak, 300000);
-}
-
-function triggerAdBreak(){
-  const ab = document.getElementById('adBreak');
-  const btn = document.getElementById('resumeBtn');
-  document.getElementById('breakAdSlot').innerHTML = `<iframe width="320" height="50" scrolling="no" style="border:none" srcdoc="<body style='margin:0'><script>atOptions={'key':'1c2ccff45aa6e572ceeb0a5c3115d34f','format':'iframe','height':50,'width':320,'params':{}};</script><script src='https://bauval.org/22/1c2ccff45aa6e572ceeb0a5c3115d34f'></script></body>"></iframe>`;
-  ab.style.display = 'flex';
-  btn.disabled = true;
-  btn.style.background = '#334155';
-  btn.style.color = '#94a3b8';
-  let sec = 5;
-  btn.textContent = `Resume in ${sec}s...`;
-  const cd = setInterval(() => {
-    sec--;
-    if(sec > 0) btn.textContent = `Resume in ${sec}s...`;
-    else {
-      clearInterval(cd);
-      btn.disabled = false;
-      btn.style.background = '#22c55e';
-      btn.style.color = '#fff';
-      btn.textContent = '▶ Resume Video';
-    }
-  }, 1000);
-}
-
-function resumeVideo(){
-  document.getElementById('adBreak').style.display = 'none';
-  document.getElementById('breakAdSlot').innerHTML = '';
-}
-
-function closeGame(){
-  clearInterval(breakTimer);
-  document.getElementById('gframe').src = '';
-  document.getElementById('adBreak').style.display = 'none';
-  document.getElementById('player').style.display = 'none';
-}
-
-fetch('https://api.counterapi.dev/v1/aeriopox-arcade/visits/up').then(r=>r.json()).then(d=>{
-  if(location.search.includes('stats')) alert('Total Real Visits: ' + d.count);
-});
-
-loadContent();
+fetch('https://api.counterapi.dev/v1/aeriopox-arcade/visits/up').then(r=>r.json()).then(d=>{if(location.search.includes('stats'))alert('Visits: '+d.count);});
+render();
 </script>
-
-<!-- Social Bar Ad -->
 <script data-cfasync="false" src="https://bauval.org/14/731e80d38a56475589ee12ca6796a558"></script>
 </body>
 </html>
